@@ -1,0 +1,53 @@
+<html>
+<head>
+<script>
+	const URL = "ws://localhost:12180/render";
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/fabric.min.js"></script>
+<script>
+var canvas;
+function openSocket() {
+	if ("WebSocket" in window) {
+		var ws = new WebSocket(URL);
+
+		ws.onopen = function() {
+			console.log('connection opened');
+		};
+
+		ws.onmessage = function (evt) {
+			canvas.loadFromJSON(evt.data, canvas.renderAll.bind(canvas));
+		};
+
+		ws.onclose = function() {
+			console.log('connection closed');
+		};
+
+		ws.onerror = function() {
+			console.log('connection error');
+			setTimeout( function() {
+				console.log('trying to connect again...');
+				openSocket();
+			}, 1000); // try to reconnect every second
+		};
+
+	} else {
+		console.log('this browser does not support web sockets...');
+	}
+}
+
+$(document).ready( function() {
+	canvas = this.__canvas = new fabric.StaticCanvas('c');
+
+	openSocket();
+});
+
+</script>
+
+</head>
+	<body>
+		<div id="main">
+		</div>
+		<canvas id="c" width="600" height="500" class="lower-canvas" style="width: 600px; height: 500px;"></canvas>
+	</body>
+</html>

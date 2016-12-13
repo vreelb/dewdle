@@ -1,0 +1,74 @@
+<html>
+<head>
+<script>
+	const URL = "ws://localhost:12180/ui";
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/fabric.min.js"></script>
+<script>
+var socket, canvas;
+function openSocket() {
+	if ("WebSocket" in window) {
+		var ws = new WebSocket(URL);
+		socket = ws;
+		ws.onopen = function() {
+			console.log('connection opened');
+		};
+
+		ws.onmessage = function (evt) {
+			console.log('received message "'+evt.data+'"');
+		};
+
+		ws.onclose = function() {
+			console.log('connection closed');
+		};
+
+		ws.onerror = function() {
+			console.log('connection error');
+			setTimeout( function() {
+				console.log('trying to connect again...');
+				openSocket();
+			}, 1000); // try to reconnect every second
+		};
+
+	} else {
+		console.log('this browser does not support web sockets...');
+	}
+}
+function sendCanvas() {
+	socket.send(JSON.stringify(canvas));
+}
+
+$(document).ready( function() {
+	openSocket();
+
+//////// CANVAS TEST CODE
+	canvas = this.__canvas = new fabric.StaticCanvas('c');
+
+	canvas.add(
+		new fabric.Rect({ top: 100, left: 100, width: 50, height: 50, fill: '#f55' }),
+		new fabric.Circle({ top: 140, left: 230, radius: 75, fill: 'orange' }),
+		new fabric.Triangle({ top: 300, left: 210, width: 100, height: 100, fill: 'blue' })
+	);
+
+	function animate() {
+		canvas.item(0).animate('top', canvas.item(0).getTop() === 500 ? '100' : '500', { 
+			duration: 1000,
+			onChange: canvas.renderAll.bind(canvas),
+			onComplete: animate
+		});
+	}
+	animate();
+//////// EOF CANVAS TEST CODE
+});
+
+</script>
+
+</head>
+	<body>
+		<div id="main">
+			<canvas id="c" width="600" height="500" class="lower-canvas" style="width: 600px; height: 500px;"></canvas>
+			<a href="javascript:sendCanvas();">Send Canvas</a>
+		</div>
+	</body>
+</html>
