@@ -42,24 +42,70 @@ function sendCanvas() {
 $(document).ready( function() {
 	openSocket();
 
-//////// CANVAS TEST CODE
-	canvas = this.__canvas = new fabric.StaticCanvas('c');
+//////// CANVAS CODE
+	(function() {
+		var $ = function(id){return document.getElementById(id)};
 
-	canvas.add(
-		new fabric.Rect({ top: 100, left: 100, width: 50, height: 50, fill: '#f55' }),
-		new fabric.Circle({ top: 140, left: 230, radius: 75, fill: 'orange' }),
-		new fabric.Triangle({ top: 300, left: 210, width: 100, height: 100, fill: 'blue' })
-	);
-
-	function animate() {
-		canvas.item(0).animate('top', canvas.item(0).getTop() === 500 ? '100' : '500', { 
-			duration: 1000,
-			onChange: canvas.renderAll.bind(canvas),
-			onComplete: animate
+		canvas = this.__canvas = new fabric.Canvas('c', {
+			isDrawingMode: true
 		});
-	}
-	animate();
-//////// EOF CANVAS TEST CODE
+
+		fabric.Object.prototype.transparentCorners = false;
+
+		var drawingModeEl = $('drawing-mode'),
+			drawingOptionsEl = $('drawing-mode-options'),
+			drawingColorEl = $('drawing-color'),
+			drawingLineWidthEl = $('drawing-line-width'),
+			clearEl = $('clear-canvas');
+
+		clearEl.onclick = function() {
+			canvas.clear();
+			sendCanvas();
+		};
+
+		drawingModeEl.onclick = function() {
+			canvas.isDrawingMode = !canvas.isDrawingMode;
+			if (canvas.isDrawingMode) {
+				drawingModeEl.innerHTML = 'Cancel drawing mode';
+				drawingOptionsEl.style.display = '';
+			}
+			else {
+				drawingModeEl.innerHTML = 'Enter drawing mode';
+				drawingOptionsEl.style.display = 'none';
+			}
+		};
+
+		$('drawing-mode-selector').onchange = function() {
+			canvas.freeDrawingBrush = new fabric[this.value + 'Brush'](canvas);
+
+
+			if (canvas.freeDrawingBrush) {
+				canvas.freeDrawingBrush.color = drawingColorEl.value;
+				canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+			}
+		};
+
+		drawingColorEl.onchange = function() {
+			canvas.freeDrawingBrush.color = this.value;
+		};
+		drawingLineWidthEl.onchange = function() {
+			canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
+			this.previousSibling.innerHTML = this.value;
+		};
+
+		if (canvas.freeDrawingBrush) {
+			canvas.freeDrawingBrush.color = drawingColorEl.value;
+			canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+			canvas.freeDrawingBrush.shadowBlur = 0;
+		}
+
+	})();
+//////// EOF CANVAS CODE
+
+	$ = jQuery;
+	$("#main").on("click", function() {
+		sendCanvas();
+	});
 });
 
 </script>
@@ -68,6 +114,25 @@ $(document).ready( function() {
 	<body>
 		<div id="main">
 			<canvas id="c" width="600" height="500" class="lower-canvas" style="width: 600px; height: 500px;"></canvas>
+
+			<div style="display: inline-block; margin-left: 10px">
+				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button><br>
+				<button id="clear-canvas" class="btn btn-info">Clear</button><br>
+
+				<div id="drawing-mode-options">
+					<label for="drawing-mode-selector">Mode:</label>
+					<select id="drawing-mode-selector">
+						<option>Pencil</option>
+					</select><br>
+
+					<label for="drawing-line-width">Line width:</label>
+					<span class="info">30</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
+
+					<label for="drawing-color">Line color:</label>
+					<input type="color" value="#005E7A" id="drawing-color"><br>
+				</div>
+			</div>
+
 			<a href="javascript:sendCanvas();">Send Canvas</a>
 		</div>
 	</body>
