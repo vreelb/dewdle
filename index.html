@@ -10,10 +10,12 @@
 var socket, canvas;
 function openSocket() {
 	if ("WebSocket" in window) {
+		var open = false;
 		var ws = new WebSocket(URL);
-		socket = ws;
+		socket = ws; // for external use
 		ws.onopen = function() {
 			console.log('connection opened');
+			open = true;
 		};
 
 		ws.onmessage = function (evt) {
@@ -21,7 +23,14 @@ function openSocket() {
 		};
 
 		ws.onclose = function() {
-			console.log('connection closed');
+			if (open) {
+				console.log('connection closed');
+				setTimeout( function() {
+					console.log('trying to reconnect...');
+					open = false;
+					openSocket();
+				}, 1000); // try to reconnect every second
+			}
 		};
 
 		ws.onerror = function() {
