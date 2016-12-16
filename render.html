@@ -5,50 +5,17 @@
 </script>
 <script src="js/jquery.min.js"></script>
 <script src="js/fabric.min.js"></script>
+<script src="js/sockets.js"></script>
 <script>
 var canvas;
-function openSocket() {
-	if ("WebSocket" in window) {
-		var open = false;
-		var ws = new WebSocket(URL);
 
-		ws.onopen = function() {
-			console.log('connection opened');
-			open = true;
-		};
-
-		ws.onmessage = function (evt) {
-			canvas.loadFromJSON(evt.data, canvas.renderAll.bind(canvas));
-		};
-
-		ws.onclose = function() {
-			if (open) {
-				console.log('connection closed');
-				setTimeout( function() {
-					console.log('trying to reconnect...');
-					open = false;
-					openSocket();
-				}, 1000); // try to reconnect every second
-			}
-		};
-
-		ws.onerror = function() {
-			console.log('connection error');
-			setTimeout( function() {
-				console.log('trying to connect again...');
-				openSocket();
-			}, 1000); // try to reconnect every second
-		};
-
-	} else {
-		console.log('this browser does not support web sockets...');
-	}
+function evalMessage(data) {
+	canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
 }
 
 $(document).ready( function() {
 	canvas = this.__canvas = new fabric.StaticCanvas('c');
-
-	openSocket();
+	openSocket(URL);
 });
 
 </script>
