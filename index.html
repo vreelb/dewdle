@@ -158,6 +158,9 @@ body {
 	background-size: 30px 30px;
 	background-position: 0 0, 15px 15px;
 }
+#drawing-mode, #mode, #drawing-mode-selector {
+	display: none;
+}
 </style>
 </head>
 	<body>
@@ -167,20 +170,20 @@ body {
 			</div>
 
 			<div style="display: inline-block; margin-left: 10px">
-				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button><br>
+				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
 				<button id="clear-canvas" class="btn btn-info">Clear</button><br>
 
 				<div id="drawing-mode-options">
-					<label for="drawing-mode-selector">Mode:</label>
+					<label id="mode" for="drawing-mode-selector">Mode:</label>
 					<select id="drawing-mode-selector">
 						<option>Pencil</option>
-					</select><br>
+					</select>
 
 					<label for="drawing-line-width">Line width:</label>
 					<span class="info">30</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
 
 					<label for="drawing-color">Line color:</label>
-					<input type="color" value="#005E7A" id="drawing-color"><br>
+					<input type="color" value="#0000FF" id="drawing-color"><br>
 				</div>
 			</div>
 		</div>
