@@ -55,6 +55,25 @@ function sendCanvas() { // set desired width in CANVAS_W
 	socket.send(JSON.stringify(canvas2));
 }
 
+function resizeCanvas() {
+	if (canvas.width != $("#canvas-contain").width()) {
+		var scale = $("#canvas-contain").width() / canvas.width;
+		var obj = canvas.getObjects();
+		for (var i in obj) {
+			obj[i].scaleX = obj[i].scaleX * scale;
+			obj[i].scaleY = obj[i].scaleY * scale;
+			obj[i].left = obj[i].left * scale;
+			obj[i].top = obj[i].top * scale;
+			obj[i].setCoords();
+		}
+
+		canvas.setWidth(canvas.getWidth() * scale);
+		canvas.setHeight(canvas.getHeight() * scale);
+		canvas.renderAll();
+		canvas.calcOffset();
+	}
+}
+
 $(document).ready( function() {
 	openSocket();
 
@@ -65,6 +84,7 @@ $(document).ready( function() {
 		canvas = this.__canvas = new fabric.Canvas('c', {
 			isDrawingMode: true
 		});
+		resizeCanvas();
 
 		fabric.Object.prototype.transparentCorners = false;
 
@@ -125,22 +145,7 @@ $(document).ready( function() {
 });
 
 $(window).resize(function () { // handle ui canvas size changes
-	if (canvas.width != $("#canvas-contain").width()) {
-		var scale = $("#canvas-contain").width() / canvas.width;
-		var obj = canvas.getObjects();
-		for (var i in obj) {
-			obj[i].scaleX = obj[i].scaleX * scale;
-			obj[i].scaleY = obj[i].scaleY * scale;
-			obj[i].left = obj[i].left * scale;
-			obj[i].top = obj[i].top * scale;
-			obj[i].setCoords();
-		}
-
-		canvas.setWidth(canvas.getWidth() * scale);
-		canvas.setHeight(canvas.getHeight() * scale);
-		canvas.renderAll();
-		canvas.calcOffset();
-	}
+	resizeCanvas();
 });
 </script>
 <style>
