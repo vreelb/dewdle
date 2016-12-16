@@ -109,11 +109,23 @@ $(document).ready( function() {
 });
 
 </script>
-
+<style>
+body {
+	margin: 0;
+}
+#canvas-contain {
+	background-color: #ccc;
+	background-image: linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999), linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999);
+	background-size: 30px 30px;
+	background-position: 0 0, 15px 15px;
+}
+</style>
 </head>
 	<body>
 		<div id="main">
-			<canvas id="c" width="600" height="500" class="lower-canvas" style="width: 600px; height: 500px;"></canvas>
+			<div id="canvas-contain">
+				<canvas id="c" width="1920" height="1080" class="lower-canvas"></canvas>
+			</div>
 
 			<div style="display: inline-block; margin-left: 10px">
 				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button><br>
@@ -132,8 +144,6 @@ $(document).ready( function() {
 					<input type="color" value="#005E7A" id="drawing-color"><br>
 				</div>
 			</div>
-
-			<a href="javascript:sendCanvas();">Send Canvas</a>
 		</div>
 	</body>
 </html>
