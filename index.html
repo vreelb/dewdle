@@ -2,6 +2,7 @@
 <head>
 <script>
 	const URL = "ws://localhost:12180/ui";
+	const CANVAS_W = 1920;
 </script>
 <script src="js/jquery.min.js"></script>
 <script src="js/fabric.min.js"></script>
@@ -35,8 +36,23 @@ function openSocket() {
 		console.log('this browser does not support web sockets...');
 	}
 }
-function sendCanvas() {
-	socket.send(JSON.stringify(canvas));
+function sendCanvas() { // set desired width in CANVAS_W
+	var canvas2 = new fabric.Canvas();
+	canvas2.loadFromJSON(JSON.stringify(canvas)); // duplicate ui canvas
+	if (canvas.width != CANVAS_W) {
+		var scale = CANVAS_W / canvas.width;
+		var obj = canvas2.getObjects();
+		for (var i in obj) {
+			obj[i].scaleX = obj[i].scaleX * scale;
+			obj[i].scaleY = obj[i].scaleY * scale;
+			obj[i].left = obj[i].left * scale;
+			obj[i].top = obj[i].top * scale;
+		}
+		canvas2.setWidth(canvas.getWidth() * scale);
+		canvas2.setHeight(canvas.getHeight() * scale);
+	}
+
+	socket.send(JSON.stringify(canvas2));
 }
 
 $(document).ready( function() {
@@ -124,7 +140,7 @@ body {
 	<body>
 		<div id="main">
 			<div id="canvas-contain">
-				<canvas id="c" width="1920" height="1080" class="lower-canvas"></canvas>
+				<canvas id="c" width="1600" height="900" class="lower-canvas"></canvas>
 			</div>
 
 			<div style="display: inline-block; margin-left: 10px">
