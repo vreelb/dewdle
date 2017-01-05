@@ -1,0 +1,17 @@
+body {
+	margin: 0;
+}
+#canvas-contain {
+	background-color: #ccc;
+	background-image: linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999), linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999);
+	background-size: 30px 30px;
+	background-position: 0 0, 15px 15px;
+}
+#indicator {
+	position: absolute;
+	pointer-events: none;
+	border: 10px solid rgba(255, 0, 0, 0);
+}
+#drawing-mode, #mode, #drawing-mode-selector {
+	display: none;
+}
