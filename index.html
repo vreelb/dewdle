@@ -50,6 +50,22 @@ function resizeCanvas() {
 		canvas.renderAll();
 		canvas.calcOffset();
 	}
+
+	$("#indicator").css({
+		"width": canvas.getWidth()-20,
+		"height": canvas.getHeight()-20,
+	});
+}
+
+function onAir() {
+	$("#indicator").css({
+		"border": "10px solid rgba(255, 0, 0, .75)",
+	});
+}
+function offAir() {
+	$("#indicator").css({
+		"border": "10px solid rgba(255, 0, 0, 0)",
+	});
 }
 
 $(document).ready( function() {
@@ -136,6 +152,11 @@ body {
 	background-size: 30px 30px;
 	background-position: 0 0, 15px 15px;
 }
+#indicator {
+	position: absolute;
+	pointer-events: none;
+	border: 10px solid rgba(255, 0, 0, 0);
+}
 #drawing-mode, #mode, #drawing-mode-selector {
 	display: none;
 }
@@ -144,6 +165,7 @@ body {
 	<body>
 		<div id="main">
 			<div id="canvas-contain">
+				<div id="indicator"></div>
 				<canvas id="c" width="1600" height="900" class="lower-canvas"></canvas>
 			</div>
 
