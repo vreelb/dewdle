@@ -126,7 +126,23 @@ $(document).ready( function() {
 	$("#canvas-contain").on("click", function() {
 		sendCanvas();
 	});
+
+	$("#fullscreen").on("click", function() {
+		goFullscreen();
+	});
 });
+
+function goFullscreen() {
+	if (document.documentElement.requestFullscreen) {
+		document.documentElement.requestFullscreen();
+	} else if (document.documentElement.msRequestFullscreen) {
+		document.documentElement.msRequestFullscreen();
+	} else if (document.documentElement.mozRequestFullScreen) {
+		document.documentElement.mozRequestFullScreen();
+	} else if (document.documentElement.webkitRequestFullscreen) {
+		document.documentElement.webkitRequestFullscreen();
+	}
+}
 
 $(window).resize(function () { // handle ui canvas size changes
 	resizeCanvas();
