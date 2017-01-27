@@ -1,3 +1,5 @@
+var socket;
+
 function openSocket(URL) {
 	if ("WebSocket" in window) {
 		var open = false;
@@ -6,6 +8,7 @@ function openSocket(URL) {
 		ws.onopen = function() {
 			console.log('connection opened');
 			open = true;
+			socket = this;
 		};
 
 		ws.onmessage = function (evt) {

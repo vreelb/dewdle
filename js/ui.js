@@ -1,4 +1,4 @@
-var socket, canvas;
+var canvas;
 
 function evalMessage(data) {
 	console.log('received message "'+data+'"');

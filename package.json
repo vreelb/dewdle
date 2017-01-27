@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/vreelb/Dewdle#readme",
   "dependencies": {
-    "ws": "^1.1.1"
+    "ws": "^1.1.1",
+    "ws-heartbeats": "^1.0.0"
   }
 }
