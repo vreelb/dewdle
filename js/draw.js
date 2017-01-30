@@ -1,9 +1,5 @@
 var canvas;
 
-function evalMessage(data) {
-	console.log('received message "'+data+'"');
-}
-
 function sendCanvas() { // set desired width in CANVAS_W
 	var canvas2 = new fabric.Canvas();
 	canvas2.loadFromJSON(JSON.stringify(canvas)); // duplicate ui canvas

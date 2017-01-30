@@ -9,19 +9,33 @@
 <script src="js/sockets.js"></script>
 <script src="js/viewscreen.js"></script>
 <script>
-function evalMessage(data) {
-	canvas.setWidth(CANVAS_W);
-	canvas.setHeight(CANVAS_W * (9/16));
-	canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
-
-	resizeCanvas();
-}
-
 $(document).ready( function() {
 	canvas = this.__canvas = new fabric.StaticCanvas('c');
 	resizeCanvas();
 
-	openSocket(URL);
+	socket = openSocket(URL);
+
+	$("#clear-canvas").click( function() {
+		canvas.clear();
+		socket.send('{"objects":[],"background":""}');
+	});
+	$("#on-air").click( function() {
+		socket.send('UP');
+	});
+	$("#off-air").click( function() {
+		socket.send('DOWN');
+	});
+});
+
+$(document).keydown( function(event) {
+	if (event.keyCode == 32) {	// spacebar for up/down control
+		event.preventDefault();
+		if (on_air) {
+			socket.send('DOWN');
+		} else {
+			socket.send('UP');
+		}
+	}
 });
 </script>
 <link rel="stylesheet" href="css/ui.css">
@@ -34,22 +48,11 @@ $(document).ready( function() {
 			</div>
 
 			<div style="display: inline-block; margin-left: 10px">
-				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
+				<br>
 				<button id="clear-canvas" class="btn btn-info">Clear</button><br>
 				<br>
-
-				<div id="drawing-mode-options">
-					<label id="mode" for="drawing-mode-selector">Mode:</label>
-					<select id="drawing-mode-selector">
-						<option>Pencil</option>
-					</select>
-
-					<label for="drawing-line-width">Line width:</label>
-					<span class="info">30</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
-
-					<label for="drawing-color">Line color:</label>
-					<input type="color" value="#0000FF" id="drawing-color"><br>
-				</div>
+				<button id="on-air">On Air</button>
+				<button id="off-air">Off Air</button>
 			</div>
 		</div>
 	</body>

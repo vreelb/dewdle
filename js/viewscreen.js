@@ -24,15 +24,34 @@ function resizeCanvas() {
 	});
 }
 
+var on_air = false;
 function onAir() {
 	$("#indicator").css({
 		"border": "10px solid rgba(255, 0, 0, .75)",
 	});
+	on_air = true;
 }
 function offAir() {
 	$("#indicator").css({
 		"border": "10px solid rgba(255, 0, 0, 0)",
 	});
+	on_air = false;
+}
+
+function evalMessage(data) {
+	switch (data) {
+		case "UP":			// going on air
+			onAir();
+			break;
+		case "DOWN":		// going off air
+			offAir();
+			break;
+		default:
+			canvas.setWidth(CANVAS_W);
+			canvas.setHeight(CANVAS_W * (9/16));
+			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+			resizeCanvas();
+	}
 }
 
 $(window).resize(function () { // handle ui canvas size changes
