@@ -27,14 +27,23 @@ $(document).ready( function() {
 	});
 });
 
+var key_down = false;
 $(document).keydown( function(event) {
 	if (event.keyCode == 32) {	// spacebar for up/down control
 		event.preventDefault();
-		if (on_air) {
-			socket.send('DOWN');
-		} else {
-			socket.send('UP');
+		if (!key_down) {
+			if (on_air) {
+				socket.send('DOWN');
+			} else {
+				socket.send('UP');
+			}
 		}
+		key_down = true;
+	}
+});
+$(document).keyup( function(event) {
+	if (event.keyCode == 32) {
+		key_down = false;
 	}
 });
 </script>
