@@ -48,7 +48,7 @@ function evalMessage(data) {
 			break;
 		default:
 			canvas.setWidth(CANVAS_W);
-			canvas.setHeight(CANVAS_W * (9/16));
+			canvas.setHeight(CANVAS_H);
 			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
 			resizeCanvas();
 	}

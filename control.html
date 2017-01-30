@@ -1,17 +1,18 @@
 <html>
 <head>
-<script>
-	const URL = "ws://localhost:12180/control";
-	const CANVAS_W = 1920;
-</script>
 <script src="js/jquery.min.js"></script>
 <script src="js/fabric.min.js"></script>
+<script src="config.js"></script>
+<script>
+	URL = URL + "control";
+</script>
 <script src="js/sockets.js"></script>
 <script src="js/viewscreen.js"></script>
 <script>
 $(document).ready( function() {
 	canvas = this.__canvas = new fabric.StaticCanvas('c');
 	resizeCanvas();
+	$("#canvas-contain").css({"max-height":(960*(CANVAS_W/CANVAS_H))});
 
 	socket = openSocket(URL);
 
@@ -51,9 +52,9 @@ $(document).keyup( function(event) {
 </head>
 	<body>
 		<div id="main">
-			<div id="canvas-contain" style="max-width:960; max-height: 540px;">
+			<div id="canvas-contain" style="max-width:960;">
 				<div id="indicator"></div>
-				<canvas id="c" width="1600" height="900" class="lower-canvas"></canvas>
+				<canvas id="c" class="lower-canvas"></canvas>
 			</div>
 
 			<div style="display: inline-block; margin-left: 10px">
