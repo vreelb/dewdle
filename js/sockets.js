@@ -16,6 +16,7 @@ function openSocket(URL) {
 		};
 
 		ws.onclose = function() {
+			handleDisconnect();
 			if (open) {
 				console.log('connection closed');
 				setTimeout( function() {
@@ -27,6 +28,7 @@ function openSocket(URL) {
 		};
 
 		ws.onerror = function() {
+			handleDisconnect();
 			console.log('connection error');
 			setTimeout( function() {
 				console.log('trying to connect again...');
