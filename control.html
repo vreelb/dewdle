@@ -1,18 +1,34 @@
 <html>
 <head>
 <script>
-	const URL = "ws://localhost:12180/ui";
+	const URL = "ws://localhost:12180/control";
 	const CANVAS_W = 1920;
 </script>
 <script src="js/jquery.min.js"></script>
 <script src="js/fabric.min.js"></script>
 <script src="js/sockets.js"></script>
-<script src="js/ui.js"></script>
+<script src="js/viewscreen.js"></script>
+<script>
+function evalMessage(data) {
+	canvas.setWidth(CANVAS_W);
+	canvas.setHeight(CANVAS_W * (9/16));
+	canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+
+	resizeCanvas();
+}
+
+$(document).ready( function() {
+	canvas = this.__canvas = new fabric.StaticCanvas('c');
+	resizeCanvas();
+
+	openSocket(URL);
+});
+</script>
 <link rel="stylesheet" href="css/ui.css">
 </head>
 	<body>
 		<div id="main">
-			<div id="canvas-contain">
+			<div id="canvas-contain" style="max-width:960; max-height: 540px;">
 				<div id="indicator"></div>
 				<canvas id="c" width="1600" height="900" class="lower-canvas"></canvas>
 			</div>
@@ -21,7 +37,6 @@
 				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
 				<button id="clear-canvas" class="btn btn-info">Clear</button><br>
 				<br>
-				<button id="fullscreen">Fullscreen</button><br>
 
 				<div id="drawing-mode-options">
 					<label id="mode" for="drawing-mode-selector">Mode:</label>

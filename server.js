@@ -14,13 +14,21 @@ wss.on("connection", function connection(ws) {
 	sendHeartbeats(ws, {"heartbeatTimeout":30000, "heartbeatInterval":10000});
 
 	ws.on("message", function incoming(message) {
-//		console.log("received '"+message+"' from "+page);
+		console.log("received '"+message+"' from "+page);
 
-		if ((page == "ui")&&(sockets["render"])) {
-			sockets["render"].send(message);
-			console.log("sending '"+message+"' to render");
-		} else if (page == "ui") {
-			console.log("unable to send message to render");
+		if (page == "draw") {
+			if (sockets["render"]) {
+				sockets["render"].send(message);
+				console.log("sending '"+message+"' to render");
+			} else {
+				console.log("render not connected, unable to send message to render");
+			}
+			if (sockets["control"]) {
+				sockets["control"].send(message);
+				console.log("sending '"+message+"' to control");
+			} else {
+				console.log("control not connected, unable to send message to control");
+			}
 		}
 	});
 

@@ -1,0 +1,42 @@
+<html>
+<head>
+<script>
+	const URL = "ws://localhost:12180/draw";
+	const CANVAS_W = 1920;
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/fabric.min.js"></script>
+<script src="js/sockets.js"></script>
+<script src="js/draw.js"></script>
+<script src="js/viewscreen.js"></script>
+<link rel="stylesheet" href="css/ui.css">
+</head>
+	<body>
+		<div id="main">
+			<div id="canvas-contain">
+				<div id="indicator"></div>
+				<canvas id="c" width="1600" height="900" class="lower-canvas"></canvas>
+			</div>
+
+			<div style="display: inline-block; margin-left: 10px">
+				<button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
+				<button id="clear-canvas" class="btn btn-info">Clear</button><br>
+				<br>
+				<button id="fullscreen">Fullscreen</button><br>
+
+				<div id="drawing-mode-options">
+					<label id="mode" for="drawing-mode-selector">Mode:</label>
+					<select id="drawing-mode-selector">
+						<option>Pencil</option>
+					</select>
+
+					<label for="drawing-line-width">Line width:</label>
+					<span class="info">30</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
+
+					<label for="drawing-color">Line color:</label>
+					<input type="color" value="#0000FF" id="drawing-color"><br>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
