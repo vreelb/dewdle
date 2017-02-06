@@ -4,7 +4,7 @@ var http = require("http");
 var net = require("net");
 var sendHeartbeats = require('ws-heartbeats');
 
-var wss = new (require("ws")).Server({port: PORT});
+var wss = new (require("ws")).Server({host: "::", port: PORT});
 var sockets_draw = [];
 var sockets_control = [];
 var sockets_render = [];
