@@ -14,12 +14,12 @@ function evalMessage(data) {
 	switch (data) {
 		case "UP":			// going on air
 			if (!$("#c").is(":visible")) {
-				$("#c").fadeIn(500);
+				$("#c").fadeIn(FADE_DURATION);
 			}
 			break;
 		case "DOWN":		// going off air
 			if ($("#c").is(":visible")) {
-				$("#c").fadeOut(500);
+				$("#c").fadeOut(FADE_DURATION);
 			}
 			break;
 		default:
@@ -29,7 +29,7 @@ function evalMessage(data) {
 
 function handleDisconnect() {
 	if ($("#c").is(":visible")) {
-		$("#c").fadeOut(500, function() {
+		$("#c").fadeOut(FADE_DURATION, function() {
 			canvas.clear();
 		});
 	} else {
@@ -39,8 +39,8 @@ function handleDisconnect() {
 
 $(document).ready( function() {
 	canvas = this.__canvas = new fabric.StaticCanvas('c');
-	canvas.setWidth(CANVAS_W);
-	canvas.setHeight(CANVAS_H);
+	canvas.setWidth(CANVAS_WIDTH);
+	canvas.setHeight(CANVAS_HEIGHT);
 	openSocket(URL);
 });
 

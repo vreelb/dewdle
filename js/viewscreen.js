@@ -47,8 +47,8 @@ function evalMessage(data) {
 			offAir();
 			break;
 		default:
-			canvas.setWidth(CANVAS_W);
-			canvas.setHeight(CANVAS_H);
+			canvas.setWidth(CANVAS_WIDTH);
+			canvas.setHeight(CANVAS_HEIGHT);
 			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
 			resizeCanvas();
 	}

@@ -1,10 +1,10 @@
 var canvas;
 
-function sendCanvas() { // set desired width in CANVAS_W
+function sendCanvas() { // set desired width in CANVAS_WIDTH
 	var canvas2 = new fabric.Canvas();
 	canvas2.loadFromJSON(JSON.stringify(canvas)); // duplicate ui canvas
-	if (canvas.width != CANVAS_W) {
-		var scale = CANVAS_W / canvas.width;
+	if (canvas.width != CANVAS_WIDTH) {
+		var scale = CANVAS_WIDTH / canvas.width;
 		var obj = canvas2.getObjects();
 		for (var i in obj) {
 			obj[i].scaleX = obj[i].scaleX * scale;

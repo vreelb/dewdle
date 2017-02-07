@@ -2,9 +2,15 @@
 var URL = "ws://" + location.hostname + ":12180/";
 // be sure to update the PORT in server.js as well
 
+// interval to retry websocket connection (ms)
+const RECONNECT_INTERVAL = 1000;
+
 // desired resolution of rendered image
-const CANVAS_W = 1920;
-const CANVAS_H = 1080;
+const CANVAS_WIDTH = 1920;
+const CANVAS_HEIGHT = 1080;
+
+// duration of the fadeIn/fadeOut effect (ms)
+const FADE_DURATION = 500;
 
 // color choices for the draw page
 const COLOR_SELECT = [

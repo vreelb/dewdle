@@ -23,7 +23,7 @@ function openSocket(URL) {
 					console.log('trying to reconnect...');
 					open = false;
 					openSocket(URL);
-				}, 1000); // try to reconnect every second
+				}, RECONNECT_INTERVAL);
 			}
 		};
 
@@ -33,7 +33,7 @@ function openSocket(URL) {
 			setTimeout( function() {
 				console.log('trying to connect again...');
 				openSocket(URL);
-			}, 1000); // try to reconnect every second
+			}, RECONNECT_INTERVAL);
 		};
 
 	} else {
