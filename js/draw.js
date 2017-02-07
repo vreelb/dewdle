@@ -23,6 +23,7 @@ $(document).ready( function() {
 	socket = openSocket(URL);
 
 //////// CANVAS CODE
+	$("#drawing-color").val(COLOR_SELECT[0]);	// set default brush color
 	(function() {
 		var $ = function(id){return document.getElementById(id)};
 
@@ -81,8 +82,6 @@ $(document).ready( function() {
 		}
 
 	})();
-
-	$("#drawing-color").val(COLOR_SELECT[0]);	// set default brush color
 //////// EOF CANVAS CODE
 
 	$ = jQuery;
