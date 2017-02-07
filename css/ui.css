@@ -1,5 +1,6 @@
 body {
 	margin: 0;
+	font-family: Helvetica, Arial, Sans-Serif;
 }
 #canvas-contain {
 	background-color: #ccc;
@@ -10,7 +11,14 @@ body {
 #indicator {
 	position: absolute;
 	pointer-events: none;
-	border: 10px solid rgba(255, 0, 0, 0);
+	text-align: center;
+	background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px);
+}
+#indicator h1 {
+	font-size: 48px;
+}
+#indicator h2 {
+	font-size: 32px;
 }
 #drawing-mode, #mode, #drawing-mode-selector {
 	display: none;

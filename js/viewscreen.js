@@ -18,22 +18,33 @@ function resizeCanvas() {
 		canvas.calcOffset();
 	}
 
-	$("#indicator").css({
-		"width": canvas.getWidth()-20,
-		"height": canvas.getHeight()-20,
-	});
+	if (on_air) {
+		$("#indicator").css({
+			"width": canvas.getWidth()-20,
+			"height": canvas.getHeight()-20,
+		});
+	} else {
+		$("#indicator").css({
+			"width": canvas.getWidth(),
+			"height": canvas.getHeight(),
+		});
+	}
 }
 
 var on_air = false;
 function onAir() {
 	$("#indicator").css({
-		"border": "10px solid rgba(255, 0, 0, .75)",
+		"width": canvas.getWidth()-20,
+		"height": canvas.getHeight()-20,
+		"border": "10px solid rgba(255, 0, 0, .9)",
 	});
 	on_air = true;
 }
 function offAir() {
 	$("#indicator").css({
-		"border": "10px solid rgba(255, 0, 0, 0)",
+		"width": canvas.getWidth(),
+		"height": canvas.getHeight(),
+		"border": "none",
 	});
 	on_air = false;
 }
@@ -41,14 +52,14 @@ function offAir() {
 var color_updated = false;
 function evalMessage(data) {
 	switch (true) {
-		case (data==="UP"):					// going on air
+		case (data === "UP"):				// going on air
 			onAir();
 			break;
-		case (data==="DOWN"):		// going off air
+		case (data === "DOWN"):				// going off air
 			offAir();
 			break;
 		case (data.substring(0,5)==="COLOR"):
-			if ($("#drawing-color").val()!==data.substring(5,12)) {
+			if ($("#drawing-color").val() !== data.substring(5,12)) {
 				color_updated = true;
 				$("#drawing-color").val(data.substring(5,12)).change();
 			}
@@ -61,10 +72,41 @@ function evalMessage(data) {
 	}
 }
 
-function handleConnect() {}
-function handleDisconnect() {}
+var dissappear, countdown, timer;
+//var timer;
+function handleConnect() {
+	$("#indicator").css({
+		"background-image": "none",
+	}).html("");
+	timer = FADE_TIMER/1000;
+	if (dissappear) {
+		clearTimeout(dissappear);
+		clearInterval(countdown);
+		console.log("connection resumed");
+	}
+}
+function handleDisconnect() {
+	$("#indicator").css({
+		"background-image": "repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)",
+	}).html("<h1>Connection Lost</h1><h2>Render going down in "+timer+" seconds...</h2>");
+	console.log("waiting for reconnect...");
+	dissappear = setTimeout( function() {
+		console.log("connection not resumed, by now we're not live");
+		dissappear = false;
+		offAir();
+	}, FADE_TIMER);
+	timer--;
+	countdown = setInterval( function() {
+		if (timer > 0) {
+			$("#indicator").html("<h1>Connection Lost</h1><h2>Render going down in "+timer--+" seconds...</h2>");
+		} else {
+			clearInterval(countdown);
+			$("#indicator").html("<h1>Connection Lost</h1><h2>Render has gone down.</h2>");
+		}
+	}, 1000);
+}
 
-$(window).resize(function () { // handle ui canvas size changes
+$(window).resize( function() { // handle ui canvas size changes
 	resizeCanvas();
 });
 
