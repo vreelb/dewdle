@@ -5,6 +5,7 @@ An open source Telestrator.
 For full installation details please see [INSTALL](https://github.com/vreelb/Dewdle/blob/master/INSTALL).
 ### Dependencies
 * [Node.js](https://nodejs.org/) ([MIT](https://opensource.org/licenses/MIT)) - Communication between the control panel and CEF keyer is done using a simple Node server.
+
 Installed by running `npm install` in the project root:
 * [ws](http://websockets.github.io/ws/) ([MIT](https://opensource.org/licenses/MIT)) - Node needs web socket support.
 * [ws-heartbeats](https://www.npmjs.com/package/ws-heartbeats) ([ISC](https://opensource.org/licenses/ISC)) - Helps keep web sockets alive.
