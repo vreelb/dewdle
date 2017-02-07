@@ -11,16 +11,18 @@
 var canvas;
 
 function evalMessage(data) {
-	switch (data) {
-		case "UP":			// going on air
+	switch (true) {
+		case (data==="UP"):			// going on air
 			if (!$("#c").is(":visible")) {
 				$("#c").fadeIn(FADE_DURATION);
 			}
 			break;
-		case "DOWN":		// going off air
+		case (data==="DOWN"):		// going off air
 			if ($("#c").is(":visible")) {
 				$("#c").fadeOut(FADE_DURATION);
 			}
+			break;
+		case (data.substring(0,5)=="COLOR"):
 			break;
 		default:
 			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));

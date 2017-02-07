@@ -11,6 +11,7 @@ var sockets_render = [];
 
 var temp_canvas = '{"objects":[],"background":""}';
 var status = "DOWN";
+var color;
 
 function socketSend(page, message) {
 	if (page == "draw") {
@@ -46,13 +47,20 @@ wss.on("connection", function connection(ws) {
 	ws.send(temp_canvas);
 	if ((page == "draw")||(page == "control")) {
 		ws.send(status);
+		if (color) {
+			ws.send("COLOR"+color);
+		}
 	}	// we don't want to cause render to go live accidentally...
 
 	ws.on("message", function incoming(message) {
-		switch (message) {
-			case "UP":					// going on air
-			case "DOWN":				// going off air
+		switch (true) {
+			case (message==="UP"):					// going on air
+			case (message==="DOWN"):				// going off air
 				status = message;		// keep track of the status either way
+				console.log("received '"+message+"' from "+page+" "+place);
+				break;
+			case (message.substring(0,5)==="COLOR"):
+				color = message.substring(5,12);
 				console.log("received '"+message+"' from "+page+" "+place);
 				break;
 			default:					// sending a canvas
@@ -62,7 +70,6 @@ wss.on("connection", function connection(ws) {
 		socketSend("draw", message);
 		socketSend("control", message);
 		socketSend("render", message);
-
 	});
 
 	ws.on("close", function () {

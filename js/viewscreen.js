@@ -38,13 +38,20 @@ function offAir() {
 	on_air = false;
 }
 
+var color_updated = false;
 function evalMessage(data) {
-	switch (data) {
-		case "UP":			// going on air
+	switch (true) {
+		case (data==="UP"):					// going on air
 			onAir();
 			break;
-		case "DOWN":		// going off air
+		case (data==="DOWN"):		// going off air
 			offAir();
+			break;
+		case (data.substring(0,5)==="COLOR"):
+			if ($("#drawing-color").val()!==data.substring(5,12)) {
+				color_updated = true;
+				$("#drawing-color").val(data.substring(5,12)).change();
+			}
 			break;
 		default:
 			canvas.setWidth(CANVAS_WIDTH);
@@ -58,4 +65,13 @@ function handleDisconnect() {}
 
 $(window).resize(function () { // handle ui canvas size changes
 	resizeCanvas();
+});
+
+$(document).ready( function() {
+	$("#drawing-color").change( function() {
+		if (!color_updated) {
+			socket.send('COLOR'+this.value);
+		}
+		color_updated = false;
+	});
 });
