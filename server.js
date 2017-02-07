@@ -43,27 +43,25 @@ wss.on("connection", function connection(ws) {
 
 	sendHeartbeats(ws, {"heartbeatTimeout":30000, "heartbeatInterval":10000});
 
+	ws.send(temp_canvas);
 	if ((page == "draw")||(page == "control")) {
-		ws.send(temp_canvas);
 		ws.send(status);
-	}
+	}	// we don't want to cause render to go live accidentally...
 
 	ws.on("message", function incoming(message) {
-		console.log("received '"+message+"' from "+page+" "+place);
-
 		switch (message) {
 			case "UP":					// going on air
 			case "DOWN":				// going off air
 				status = message;		// keep track of the status either way
-				socketSend("draw", message);
-				socketSend("control", message);
+				console.log("received '"+message+"' from "+page+" "+place);
 				break;
 			default:					// sending a canvas
 				temp_canvas = message;	// keep track of the canvas state
-				socketSend("draw", message);
-				socketSend("control", message);
-				socketSend("render", message);
+				console.log("received canvas update from "+page+" "+place);
 		}
+		socketSend("draw", message);
+		socketSend("control", message);
+		socketSend("render", message);
 
 	});
 

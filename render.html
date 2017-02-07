@@ -11,11 +11,30 @@
 var canvas;
 
 function evalMessage(data) {
-	canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+	switch (data) {
+		case "UP":			// going on air
+			if (!$("#c").is(":visible")) {
+				$("#c").fadeIn(500);
+			}
+			break;
+		case "DOWN":		// going off air
+			if ($("#c").is(":visible")) {
+				$("#c").fadeOut(500);
+			}
+			break;
+		default:
+			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+	}
 }
 
 function handleDisconnect() {
-	canvas.clear();
+	if ($("#c").is(":visible")) {
+		$("#c").fadeOut(500, function() {
+			canvas.clear();
+		});
+	} else {
+		canvas.clear();
+	}
 }
 
 $(document).ready( function() {
@@ -33,6 +52,9 @@ html {
 body {
 	margin: 0;
 	overflow: hidden;
+}
+#c {
+	display: none;
 }
 </style>
 </head>
