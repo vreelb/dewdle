@@ -73,7 +73,6 @@ function evalMessage(data) {
 }
 
 var dissappear, countdown, timer;
-//var timer;
 function handleConnect() {
 	$("#indicator").css({
 		"background-image": "none",
@@ -88,22 +87,29 @@ function handleConnect() {
 function handleDisconnect() {
 	$("#indicator").css({
 		"background-image": "repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)",
-	}).html("<h1>Connection Lost</h1><h2>Render going down in "+timer+" seconds...</h2>");
+	}).html("<h1>Connection Lost</h1>");
+	if (on_air) {
+		$("#indicator").append("<h2>Render going down in "+timer+" seconds...</h2>");
+	} else {
+		$("#indicator").append("<h2>Render is down.</h2>");
+	}
 	console.log("waiting for reconnect...");
 	dissappear = setTimeout( function() {
 		console.log("connection not resumed, by now we're not live");
 		dissappear = false;
 		offAir();
 	}, FADE_TIMER);
-	timer--;
-	countdown = setInterval( function() {
-		if (timer > 0) {
-			$("#indicator").html("<h1>Connection Lost</h1><h2>Render going down in "+timer--+" seconds...</h2>");
-		} else {
-			clearInterval(countdown);
-			$("#indicator").html("<h1>Connection Lost</h1><h2>Render has gone down.</h2>");
-		}
-	}, 1000);
+	if (on_air) {
+		timer--;
+		countdown = setInterval( function() {
+			if (timer > 0) {
+				$("#indicator").html("<h1>Connection Lost</h1><h2>Render going down in "+timer--+" seconds...</h2>");
+			} else {
+				clearInterval(countdown);
+				$("#indicator").html("<h1>Connection Lost</h1><h2>Render is down.</h2>");
+			}
+		}, 1000);
+	}
 }
 
 $(window).resize( function() { // handle ui canvas size changes
