@@ -9,6 +9,7 @@ function openSocket(URL) {
 			console.log('connection opened');
 			open = true;
 			socket = this;
+			handleConnect();
 		};
 
 		ws.onmessage = function (evt) {
@@ -16,9 +17,9 @@ function openSocket(URL) {
 		};
 
 		ws.onclose = function() {
-			handleDisconnect();
 			if (open) {
 				console.log('connection closed');
+				handleDisconnect();
 				setTimeout( function() {
 					console.log('trying to reconnect...');
 					open = false;
@@ -28,7 +29,6 @@ function openSocket(URL) {
 		};
 
 		ws.onerror = function() {
-			handleDisconnect();
 			console.log('connection error');
 			setTimeout( function() {
 				console.log('trying to connect again...');

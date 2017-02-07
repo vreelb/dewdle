@@ -61,6 +61,7 @@ function evalMessage(data) {
 	}
 }
 
+function handleConnect() {}
 function handleDisconnect() {}
 
 $(window).resize(function () { // handle ui canvas size changes

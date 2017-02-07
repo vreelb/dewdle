@@ -45,7 +45,9 @@ $(document).keydown( function(event) {
 });
 $(document).keyup( function(event) {
 	if (event.keyCode == 32) {
-		key_down = false;
+		setTimeout( function() {	// prevents animation conflicts
+			key_down = false;		// prevents held repeats
+		}, FADE_DURATION);
 	}
 });
 </script>

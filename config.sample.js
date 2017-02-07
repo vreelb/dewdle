@@ -11,6 +11,8 @@ const CANVAS_HEIGHT = 1080;
 
 // duration of the fadeIn/fadeOut effect (ms)
 const FADE_DURATION = 500;
+// time before connection loss fadeOut (ms)
+const FADE_TIMER = 5000;
 
 // color choices for the draw page
 const COLOR_SELECT = [

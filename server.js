@@ -10,7 +10,7 @@ var sockets_control = [];
 var sockets_render = [];
 
 var temp_canvas = '{"objects":[],"background":""}';
-var status = "DOWN";
+var status;
 var color;
 
 function socketSend(page, message) {
@@ -44,32 +44,40 @@ wss.on("connection", function connection(ws) {
 
 	sendHeartbeats(ws, {"heartbeatTimeout":30000, "heartbeatInterval":10000});
 
-	ws.send(temp_canvas);
-	if ((page == "draw")||(page == "control")) {
-		ws.send(status);
+	if ((page === "draw")||(page === "control")) {
+		ws.send(temp_canvas);
+		if (status) {
+			ws.send(status);
+		} else {
+			ws.send("DOWN");
+		}
 		if (color) {
 			ws.send("COLOR"+color);
 		}
-	}	// we don't want to cause render to go live accidentally...
+	} else if (status === "DOWN") {
+		ws.send(temp_canvas);
+	}
 
 	ws.on("message", function incoming(message) {
 		switch (true) {
-			case (message==="UP"):					// going on air
-			case (message==="DOWN"):				// going off air
+			case (message === "DOWN"):				// going off air
+				socketSend("render", temp_canvas);
+			case (message === "UP"):					// going on air
 				status = message;		// keep track of the status either way
 				console.log("received '"+message+"' from "+page+" "+place);
+				socketSend("render", message);
 				break;
-			case (message.substring(0,5)==="COLOR"):
+			case (message.substring(0,5) === "COLOR"):
 				color = message.substring(5,12);
 				console.log("received '"+message+"' from "+page+" "+place);
 				break;
 			default:					// sending a canvas
 				temp_canvas = message;	// keep track of the canvas state
 				console.log("received canvas update from "+page+" "+place);
+				socketSend("render", message);
 		}
 		socketSend("draw", message);
 		socketSend("control", message);
-		socketSend("render", message);
 	});
 
 	ws.on("close", function () {
