@@ -81,6 +81,8 @@ $(document).ready( function() {
 		}
 
 	})();
+
+	$("#drawing-color").val(COLOR_SELECT[0]);	// set default brush color
 //////// EOF CANVAS CODE
 
 	$ = jQuery;
