@@ -1,3 +1,5 @@
+URL = URL + "draw";
+
 var canvas;
 
 function sendCanvas() { // set desired width in CANVAS_WIDTH
