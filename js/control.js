@@ -1,27 +1,21 @@
-URL = URL + "control";
+URL = URL + 'control';
 
-$(document).ready( function() {
-	$("#drawing-color").val(COLOR_SELECT[0]);	// set default brush color
+$(document).ready(function() {
+	$('#drawing-color').val(COLOR_SELECT[0]);	// set default brush color
 	canvas = this.__canvas = new fabric.StaticCanvas('c');
 	resizeCanvas();
-	$("#canvas-contain").css({"max-height":(960*(CANVAS_WIDTH/CANVAS_HEIGHT))});
+	$("#canvas-contain").css({'max-height': 960*(CANVAS_WIDTH/CANVAS_HEIGHT)});
 
 	socket = openSocket(URL);
 
-	$("#clear-canvas").click( function() {
+	$('#clear-canvas').click(function() {
 		canvas.clear();
 		socket.send('{"objects":[],"background":""}');
-	});
-	$("#on-air").click( function() {
-		socket.send('UP');
-	});
-	$("#off-air").click( function() {
-		socket.send('DOWN');
 	});
 });
 
 var key_down = false;
-$(document).keydown( function(event) {
+$(document).keydown(function(event) {
 	if (event.keyCode == 32) {	// spacebar for up/down control
 		event.preventDefault();
 		if (!key_down) {
@@ -34,9 +28,9 @@ $(document).keydown( function(event) {
 		key_down = true;
 	}
 });
-$(document).keyup( function(event) {
+$(document).keyup(function(event) {
 	if (event.keyCode == 32) {
-		setTimeout( function() {	// prevents animation conflicts
+		setTimeout(function() {	// prevents animation conflicts
 			key_down = false;		// prevents held repeats
 		}, FADE_DURATION);
 	}

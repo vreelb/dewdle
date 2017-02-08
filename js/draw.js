@@ -1,4 +1,4 @@
-URL = URL + "draw";
+URL = URL + 'draw';
 
 var canvas;
 
@@ -25,7 +25,7 @@ $(document).ready( function() {
 	socket = openSocket(URL);
 
 //////// CANVAS CODE
-	$("#drawing-color").val(COLOR_SELECT[0]);	// set default brush color
+	$('#drawing-color').val(COLOR_SELECT[0]);	// set default brush color
 	(function() {
 		var $ = function(id){return document.getElementById(id)};
 
@@ -87,11 +87,11 @@ $(document).ready( function() {
 //////// EOF CANVAS CODE
 
 	$ = jQuery;
-	$("#canvas-contain").on("click", function() {
+	$('#canvas-contain').on('click', function() {
 		sendCanvas();
 	});
 
-	$("#fullscreen").on("click", function() {
+	$('#fullscreen').on('click', function() {
 		goFullscreen();
 	});
 });

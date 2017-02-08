@@ -1,8 +1,8 @@
 var canvas;
 
 function resizeCanvas() {
-	if (canvas.width != $("#canvas-contain").width()) {
-		var scale = $("#canvas-contain").width() / canvas.width;
+	if (canvas.width != $('#canvas-contain').width()) {
+		var scale = $('#canvas-contain').width() / canvas.width;
 		var obj = canvas.getObjects();
 		for (var i in obj) {
 			obj[i].scaleX = obj[i].scaleX * scale;
@@ -19,32 +19,32 @@ function resizeCanvas() {
 	}
 
 	if (on_air) {
-		$("#indicator").css({
-			"width": canvas.getWidth()-20,
-			"height": canvas.getHeight()-20,
+		$('#indicator').css({
+			'width': canvas.getWidth()-20,
+			'height': canvas.getHeight()-20,
 		});
 	} else {
-		$("#indicator").css({
-			"width": canvas.getWidth(),
-			"height": canvas.getHeight(),
+		$('#indicator').css({
+			'width': canvas.getWidth(),
+			'height': canvas.getHeight(),
 		});
 	}
 }
 
 var on_air = false;
 function onAir() {
-	$("#indicator").css({
-		"width": canvas.getWidth()-20,
-		"height": canvas.getHeight()-20,
-		"border": "10px solid rgba(255, 0, 0, .9)",
+	$('#indicator').css({
+		'width': canvas.getWidth()-20,
+		'height': canvas.getHeight()-20,
+		'border': '10px solid rgba(255, 0, 0, .9)',
 	});
 	on_air = true;
 }
 function offAir() {
-	$("#indicator").css({
-		"width": canvas.getWidth(),
-		"height": canvas.getHeight(),
-		"border": "none",
+	$('#indicator').css({
+		'width': canvas.getWidth(),
+		'height': canvas.getHeight(),
+		'border': 'none',
 	});
 	on_air = false;
 }
@@ -52,16 +52,16 @@ function offAir() {
 var color_updated = false;
 function evalMessage(data) {
 	switch (true) {
-		case (data === "UP"):				// going on air
+		case (data === 'UP'):				// going on air
 			onAir();
 			break;
-		case (data === "DOWN"):				// going off air
+		case (data === 'DOWN'):				// going off air
 			offAir();
 			break;
-		case (data.substring(0,5)==="COLOR"):
-			if ($("#drawing-color").val() !== data.substring(5,12)) {
+		case (data.substring(0,5)==='COLOR'):
+			if ($('#drawing-color').val() !== data.substring(5,12)) {
 				color_updated = true;
-				$("#drawing-color").val(data.substring(5,12)).change();
+				$('#drawing-color').val(data.substring(5,12)).change();
 			}
 			break;
 		default:
@@ -74,50 +74,50 @@ function evalMessage(data) {
 
 var dissappear, countdown, timer;
 function handleConnect() {
-	$("#indicator").css({
-		"background-image": "none",
-	}).html("");
+	$('#indicator').css({
+		'background-image': 'none',
+	}).html('');
 	timer = FADE_TIMER/1000;
 	if (dissappear) {
 		clearTimeout(dissappear);
 		clearInterval(countdown);
-		console.log("connection resumed");
+		console.log('connection resumed');
 	}
 }
 function handleDisconnect() {
-	$("#indicator").css({
-		"background-image": "repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)",
-	}).html("<h1>Connection Lost</h1>");
+	$('#indicator').css({
+		'background-image': 'repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)',
+	}).html('<h1>Connection Lost</h1>');
 	if (on_air) {
-		$("#indicator").append("<h2>Render going down in "+timer+" seconds...</h2>");
+		$('#indicator').append('<h2>Render going down in '+timer+' seconds...</h2>');
 	} else {
-		$("#indicator").append("<h2>Render is down.</h2>");
+		$('#indicator').append('<h2>Render is down.</h2>');
 	}
-	console.log("waiting for reconnect...");
-	dissappear = setTimeout( function() {
-		console.log("connection not resumed, by now we're not live");
+	console.log('waiting for reconnect...');
+	dissappear = setTimeout(function() {
+		console.log('connection not resumed, by now we\'re not live');
 		dissappear = false;
 		offAir();
 	}, FADE_TIMER);
 	if (on_air) {
 		timer--;
-		countdown = setInterval( function() {
+		countdown = setInterval(function() {
 			if (timer > 0) {
-				$("#indicator").html("<h1>Connection Lost</h1><h2>Render going down in "+timer--+" seconds...</h2>");
+				$('#indicator h2').html('Render going down in '+timer--+' seconds...');
 			} else {
 				clearInterval(countdown);
-				$("#indicator").html("<h1>Connection Lost</h1><h2>Render is down.</h2>");
+				$('#indicator h2').html('Render is down.');
 			}
 		}, 1000);
 	}
 }
 
-$(window).resize( function() { // handle ui canvas size changes
+$(window).resize(function() { // handle ui canvas size changes
 	resizeCanvas();
 });
 
-$(document).ready( function() {
-	$("#drawing-color").change( function() {
+$(document).ready(function() {
+	$('#drawing-color').change(function() {
 		if (!color_updated) {
 			socket.send('COLOR'+this.value);
 		}

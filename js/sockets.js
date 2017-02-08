@@ -1,7 +1,7 @@
 var socket;
 
 function openSocket(URL) {
-	if ("WebSocket" in window) {
+	if ('WebSocket' in window) {
 		var open = false;
 		var ws = new WebSocket(URL);
 
@@ -20,7 +20,7 @@ function openSocket(URL) {
 			if (open) {
 				console.log('connection closed');
 				handleDisconnect();
-				setTimeout( function() {
+				setTimeout(function() {
 					console.log('trying to reconnect...');
 					open = false;
 					openSocket(URL);
@@ -30,14 +30,14 @@ function openSocket(URL) {
 
 		ws.onerror = function() {
 			console.log('connection error');
-			setTimeout( function() {
+			setTimeout(function() {
 				console.log('trying to connect again...');
 				openSocket(URL);
 			}, RECONNECT_INTERVAL);
 		};
 
 	} else {
-		console.log('this browser does not support web sockets...');
+		console.log('this browser does not support web sockets');
 	}
 	return ws;
 }
