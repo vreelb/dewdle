@@ -8,7 +8,7 @@ var wss = new (require('ws')).Server({host: '::', port: PORT});
 var sockets_draw = [], sockets_control = [], sockets_render = [];
 
 var temp_canvas = '{"objects":[],"background":""}';
-var status, color;
+var status, color_string;
 
 function socketSend(page, message) {
 	if (page === 'draw') {
@@ -48,8 +48,8 @@ wss.on('connection', function connection(ws) {
 		} else {
 			ws.send('DOWN');
 		}
-		if (color) {
-			ws.send('COLOR'+color);
+		if (color_string) {
+			ws.send(color_string);
 		}
 	} else if (status === 'DOWN') {
 		ws.send(temp_canvas);
@@ -58,23 +58,21 @@ wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 		switch (true) {
 			case (message === 'DOWN'):				// going off air
-				socketSend('render', temp_canvas);
 			case (message === 'UP'):					// going on air
 				status = message;		// keep track of the status either way
 				console.log('received "'+message+'" from '+page+' '+place);
-				socketSend('render', message);
 				break;
 			case (message.substring(0,5) === 'COLOR'):
-				color = message.substring(5,12);
+				color_string = message;
 				console.log('received "'+message+'" from '+page+' '+place);
 				break;
 			default:					// sending a canvas
 				temp_canvas = message;	// keep track of the canvas state
 				console.log('received canvas update from '+page+' '+place);
-				socketSend('render', message);
 		}
 		socketSend('draw', message);
 		socketSend('control', message);
+		socketSend('render', message);
 	});
 
 	ws.on('close', function () {

@@ -1,6 +1,7 @@
 URL = URL + 'render';
 
 var canvas;
+var color_string = "COLOR"+COLOR_SELECT[0];
 
 function evalMessage(data) {
 	switch (true) {
@@ -15,19 +16,22 @@ function evalMessage(data) {
 			}
 			break;
 		case (data.substring(0,5) === 'COLOR'):
+			color_string = data;
 			break;
 		default:
 			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
 	}
 }
 
-var dissappear;
+var dissappear = false;
 function handleConnect() {
 	if (dissappear) {
 		clearTimeout(dissappear);
+		dissappear = false;
 		console.log('connection resumed, staying up');
 		socket.send(JSON.stringify(canvas));
 		socket.send('UP');
+		socket.send(color_string);
 	}
 }
 function handleDisconnect() {

@@ -58,7 +58,7 @@ function evalMessage(data) {
 		case (data === 'DOWN'):				// going off air
 			offAir();
 			break;
-		case (data.substring(0,5)==='COLOR'):
+		case (data.substring(0,5) === 'COLOR'):
 			if ($('#drawing-color').val() !== data.substring(5,12)) {
 				color_updated = true;
 				$('#drawing-color').val(data.substring(5,12)).change();
