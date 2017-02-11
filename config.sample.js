@@ -22,3 +22,6 @@ const COLOR_SELECT = [
 	'#000000',
 ];
 // the control page can select a custom color
+
+// show/hide single-page operator mode
+const SHOW_OP_MODE = true;

@@ -94,6 +94,19 @@ $(document).ready( function() {
 	$('#fullscreen').on('click', function() {
 		goFullscreen();
 	});
+
+	if (SHOW_OP_MODE === true) {
+		$('#op-mode').on('click', function() {
+			if (confirm("WARNING: Spacebar will now control UP/DOWN.")) {
+				bindSpacebar();
+				$('#op-mode').hide();
+			} else {
+				$(this).blur();		// prevent accidental presses
+			}
+		});
+	} else {
+		$('#op-mode').hide();
+	}
 });
 
 function goFullscreen() {

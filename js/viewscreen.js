@@ -116,6 +116,30 @@ $(window).resize(function() { // handle ui canvas size changes
 	resizeCanvas();
 });
 
+function bindSpacebar() {
+	var key_down = false;
+	$(document).keydown(function(event) {
+		if (event.keyCode == 32) {	// spacebar for up/down control
+			event.preventDefault();
+			if (!key_down) {
+				if (on_air) {
+					socket.send('DOWN');
+				} else {
+					socket.send('UP');
+				}
+			}
+			key_down = true;
+		}
+	});
+	$(document).keyup(function(event) {
+		if (event.keyCode == 32) {
+			setTimeout(function() {	// prevents animation conflicts
+				key_down = false;		// prevents held repeats
+			}, FADE_DURATION);
+		}
+	});
+}
+
 $(document).ready(function() {
 	$('#drawing-color').change(function() {
 		if (!color_updated) {
