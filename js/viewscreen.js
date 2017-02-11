@@ -123,4 +123,5 @@ $(document).ready(function() {
 		}
 		color_updated = false;
 	});
+	$('#indicator').html('<h1>No Connection</h1><h2>Trying to connect...</h2>');
 });
