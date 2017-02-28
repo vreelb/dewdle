@@ -8,7 +8,7 @@ var wss = new (require('ws')).Server({host: '::', port: PORT});
 var sockets_draw = [], sockets_control = [], sockets_render = [];
 
 var temp_canvas = '{"objects":[],"background":""}';
-var status, color_string;
+var status, color_string, size_string;
 
 function socketSend(page, message) {
 	if (page === 'draw') {
@@ -51,6 +51,9 @@ wss.on('connection', function connection(ws) {
 		if (color_string) {
 			ws.send(color_string);
 		}
+		if (size_string) {
+			ws.send(size_string);
+		}
 	} else if (status === 'DOWN') {
 		ws.send(temp_canvas);
 	}
@@ -64,6 +67,10 @@ wss.on('connection', function connection(ws) {
 				break;
 			case (message.substring(0,5) === 'COLOR'):
 				color_string = message;
+				console.log('received "'+message+'" from '+page+' '+place);
+				break;
+			case (message.substring(0,4) === 'SIZE'):
+				size_string = message;
 				console.log('received "'+message+'" from '+page+' '+place);
 				break;
 			default:					// sending a canvas

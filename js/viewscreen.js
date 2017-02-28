@@ -50,6 +50,7 @@ function offAir() {
 }
 
 var color_updated = false;
+var size_updated = false;
 function evalMessage(data) {
 	switch (true) {
 		case (data === 'UP'):				// going on air
@@ -62,6 +63,12 @@ function evalMessage(data) {
 			if ($('#drawing-color').val() !== data.substring(5,12)) {
 				color_updated = true;
 				$('#drawing-color').val(data.substring(5,12)).change();
+			}
+			break;
+		case (data.substring(0,4) === 'SIZE'):
+			if ($('#drawing-line-width').val() !== data.substring(4)) {
+				size_updated = true;
+				$('#drawing-line-width').val(data.substring(4)).change();
 			}
 			break;
 		default:
@@ -146,6 +153,13 @@ $(document).ready(function() {
 			socket.send('COLOR'+this.value);
 		}
 		color_updated = false;
+	});
+	$('#drawing-line-width').change(function() {
+		$('#line-info').html($('#drawing-line-width').val());
+		if (!size_updated) {
+			socket.send('SIZE'+this.value);
+		}
+		size_updated = false;
 	});
 	$('#indicator').html('<h1>No Connection</h1><h2>Trying to connect...</h2>');
 });

@@ -2,6 +2,7 @@ URL = URL + 'render';
 
 var canvas;
 var color_string = "COLOR"+COLOR_SELECT[0];
+var size_string = "SIZE"+SIZE_SELECT[0];
 
 function evalMessage(data) {
 	switch (true) {
@@ -18,6 +19,9 @@ function evalMessage(data) {
 		case (data.substring(0,5) === 'COLOR'):
 			color_string = data;
 			break;
+		case (data.substring(0,4) === 'SIZE'):
+			size_string = data;
+			break;
 		default:
 			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
 	}
@@ -32,6 +36,7 @@ function handleConnect() {
 		socket.send(JSON.stringify(canvas));
 		socket.send('UP');
 		socket.send(color_string);
+		socket.send(size_string);
 	}
 }
 function handleDisconnect() {

@@ -23,5 +23,14 @@ const COLOR_SELECT = [
 ];
 // the control page can select a custom color
 
+// brush sizes for the draw page (% relative to canvas)
+const SIZE_SELECT = [
+	5,
+	10,
+	25,
+	20,
+];
+// the control page can select a custom size
+
 // show/hide single-page operator mode
 const SHOW_OP_MODE = true;

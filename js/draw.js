@@ -26,6 +26,8 @@ $(document).ready( function() {
 
 //////// CANVAS CODE
 	$('#drawing-color').val(COLOR_SELECT[0]);	// set default brush color
+	$('#drawing-line-width').val(SIZE_SELECT[0]);	// set default brush size
+	$('#line-info').html($('#drawing-line-width').val());
 	(function() {
 		var $ = function(id){return document.getElementById(id)};
 
