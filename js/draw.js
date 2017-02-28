@@ -75,13 +75,13 @@ $(document).ready( function() {
 			canvas.freeDrawingBrush.color = this.value;
 		};
 		drawingLineWidthEl.onchange = function() {
-			canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
+			canvas.freeDrawingBrush.width = (parseInt(drawingLineWidthEl.value, 10)/100)*$('c').width || 1;
 			this.previousSibling.innerHTML = this.value;
 		};
 
 		if (canvas.freeDrawingBrush) {
 			canvas.freeDrawingBrush.color = drawingColorEl.value;
-			canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+			canvas.freeDrawingBrush.width = (parseInt(drawingLineWidthEl.value, 10)/100)*$('c').width || 1;
 			canvas.freeDrawingBrush.shadowBlur = 0;
 		}
 

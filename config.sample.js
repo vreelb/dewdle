@@ -25,10 +25,10 @@ const COLOR_SELECT = [
 
 // brush sizes for the draw page (% relative to canvas)
 const SIZE_SELECT = [
-	5,
-	10,
-	25,
-	20,
+	1,
+	2,
+	3,
+	4,
 ];
 // the control page can select a custom size
 

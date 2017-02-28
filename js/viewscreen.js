@@ -121,6 +121,11 @@ function handleDisconnect() {
 
 $(window).resize(function() { // handle ui canvas size changes
 	resizeCanvas();
+	clearTimeout($.data(this, 'resizeTimer'));
+	$.data(this, 'resizeTimer', setTimeout(function() {
+		size_updated = true;
+		$('#drawing-line-width').change();
+	}, 200));
 });
 
 function bindSpacebar() {
