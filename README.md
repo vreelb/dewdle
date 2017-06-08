@@ -28,5 +28,5 @@ Dewdle is split into 3 pages (each of which can have multiple instances):
 Dewdle is licensed under GPL-3.0: [LICENSE](https://github.com/vreelb/Dewdle/blob/master/LICENSE)
 ### FOSS Inclusions
 The following are included, whole or in part, within this project. All included materials must have compatible licenses.
-* [jQuery](http://jquery.com/) - [MIT](https://jquery.org/license/)
-* [Fabric.js](http://fabricjs.com/) - [MIT](https://opensource.org/licenses/MIT)
+* [jQuery](http://jquery.com/) ([MIT](https://jquery.org/license/))
+* [Fabric.js](http://fabricjs.com/) ([MIT](https://opensource.org/licenses/MIT))
