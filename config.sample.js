@@ -1,5 +1,6 @@
 // URL of the server (include trailing slash)
-var URL = 'ws://' + location.hostname + ':12180/';
+var URL = 'ws://localhost:12180/';
+//var URL = 'ws://' + location.hostname + ':12180/';
 // be sure to update the PORT in server.js as well
 
 // interval to retry websocket connection (ms)
