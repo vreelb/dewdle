@@ -9,6 +9,7 @@ For full installation details please see [INSTALL](https://github.com/vreelb/Dew
 Installed by running `npm install` in the project root:
 * [ws](http://websockets.github.io/ws/) ([MIT](https://opensource.org/licenses/MIT)) - Node needs web socket support.
 * [ws-heartbeats](https://www.npmjs.com/package/ws-heartbeats) ([ISC](https://opensource.org/licenses/ISC)) - Helps keep web sockets alive.
+* [Express](https://expressjs.com/) ([MIT](https://opensource.org/licenses/MIT)) - Serves as the http server.
 
 ### Recommended Keyer Programs
 For usage in a streaming environment:

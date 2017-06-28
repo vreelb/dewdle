@@ -1,12 +1,19 @@
 const PORT = '12180';
 
-var http = require('http');
-var net = require('net');
-var sendHeartbeats = require('ws-heartbeats');
+const express = require('express');
+const app = express();
+const wss = new (require('ws')).Server({host: '::', port: PORT});
+const sendHeartbeats = require('ws-heartbeats');
 
-var wss = new (require('ws')).Server({host: '::', port: PORT});
+app.use('/draw', express.static(__dirname + '/draw.html'));
+app.use('/control', express.static(__dirname + '/control.html'));
+app.use('/render', express.static(__dirname + '/render.html'));
+app.use('/', express.static(__dirname));
+app.listen(80, function () {
+	console.log('Web server started on port 80...')
+});
+
 var sockets_draw = [], sockets_control = [], sockets_render = [];
-
 var temp_canvas = '{"objects":[],"background":""}';
 var status, color_string, size_string;
 
@@ -94,4 +101,4 @@ wss.on('connection', function connection(ws) {
 	});
 });
 
-console.log('server listening on port '+PORT+'...');
+console.log('Websocket server listening on port '+PORT+'...');
