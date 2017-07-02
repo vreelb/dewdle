@@ -1,29 +1,36 @@
 URL = URL + 'render';
 
 var canvas;
-var color_string = "COLOR"+COLOR_SELECT[0];
-var size_string = "SIZE"+SIZE_SELECT[0];
+var color = {
+	command: 'COLOR',
+	color: COLOR_SELECT[0]
+}
+var size = {
+	command: 'SIZE',
+	size: SIZE_SELECT[0]
+}
 
-function evalMessage(data) {
-	switch (true) {
-		case (data === 'UP'):			// going on air
+function evalMessage(msg) {
+	var data = JSON.parse(msg);
+	switch (data.command) {
+		case ('UP'):			// going on air
 			if (!$('#c').is(':visible')) {
 				$('#c').fadeIn(FADE_DURATION);
 			}
 			break;
-		case (data === 'DOWN'):		// going off air
+		case ('DOWN'):		// going off air
 			if ($('#c').is(':visible')) {
 				$('#c').fadeOut(FADE_DURATION);
 			}
 			break;
-		case (data.substring(0,5) === 'COLOR'):
-			color_string = data;
+		case ('COLOR'):
+			color = data;
 			break;
-		case (data.substring(0,4) === 'SIZE'):
-			size_string = data;
+		case ('SIZE'):
+			size = data;
 			break;
 		default:
-			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+			canvas.loadFromJSON(msg, canvas.renderAll.bind(canvas));
 	}
 }
 
@@ -33,10 +40,10 @@ function handleConnect() {
 		clearTimeout(dissappear);
 		dissappear = false;
 		console.log('connection resumed, staying up');
-		socket.send(JSON.stringify(canvas));
-		socket.send('UP');
-		socket.send(color_string);
-		socket.send(size_string);
+		serialSend(canvas);
+		serialSend({ command: 'UP' });
+		serialSend(color);
+		serialSend(size);
 	}
 }
 function handleDisconnect() {

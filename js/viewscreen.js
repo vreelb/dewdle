@@ -21,12 +21,12 @@ function resizeCanvas() {
 	if (on_air) {
 		$('#indicator').css({
 			'width': canvas.getWidth()-20,
-			'height': canvas.getHeight()-20,
+			'height': canvas.getHeight()-20
 		});
 	} else {
 		$('#indicator').css({
 			'width': canvas.getWidth(),
-			'height': canvas.getHeight(),
+			'height': canvas.getHeight()
 		});
 	}
 }
@@ -36,7 +36,7 @@ function onAir() {
 	$('#indicator').css({
 		'width': canvas.getWidth()-20,
 		'height': canvas.getHeight()-20,
-		'border': '10px solid rgba(255, 0, 0, .9)',
+		'border': '10px solid rgba(255, 0, 0, .9)'
 	});
 	on_air = true;
 }
@@ -44,37 +44,38 @@ function offAir() {
 	$('#indicator').css({
 		'width': canvas.getWidth(),
 		'height': canvas.getHeight(),
-		'border': 'none',
+		'border': 'none'
 	});
 	on_air = false;
 }
 
 var color_updated = false;
 var size_updated = false;
-function evalMessage(data) {
-	switch (true) {
-		case (data === 'UP'):				// going on air
+function evalMessage(msg) {
+	var data = JSON.parse(msg);
+	switch (data.command) {
+		case ('UP'):				// going on air
 			onAir();
 			break;
-		case (data === 'DOWN'):				// going off air
+		case ('DOWN'):				// going off air
 			offAir();
 			break;
-		case (data.substring(0,5) === 'COLOR'):
-			if ($('#drawing-color').val() !== data.substring(5,12)) {
+		case ('COLOR'):
+			if ($('#drawing-color').val() !== data.color) {
 				color_updated = true;
-				$('#drawing-color').val(data.substring(5,12)).change();
+				$('#drawing-color').val(data.color).change();
 			}
 			break;
-		case (data.substring(0,4) === 'SIZE'):
-			if ($('#drawing-line-width').val() !== data.substring(4)) {
+		case ('SIZE'):
+			if ($('#drawing-line-width').val() !== data.size) {
 				size_updated = true;
-				$('#drawing-line-width').val(data.substring(4)).change();
+				$('#drawing-line-width').val(data.size).change();
 			}
 			break;
 		default:
 			canvas.setWidth(CANVAS_WIDTH);
 			canvas.setHeight(CANVAS_HEIGHT);
-			canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+			canvas.loadFromJSON(msg, canvas.renderAll.bind(canvas));
 			resizeCanvas();
 	}
 }
@@ -82,7 +83,7 @@ function evalMessage(data) {
 var dissappear, countdown, timer;
 function handleConnect() {
 	$('#indicator').css({
-		'background-image': 'none',
+		'background-image': 'none'
 	}).html('');
 	timer = FADE_TIMER/1000;
 	if (dissappear) {
@@ -93,7 +94,7 @@ function handleConnect() {
 }
 function handleDisconnect() {
 	$('#indicator').css({
-		'background-image': 'repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)',
+		'background-image': 'repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)'
 	}).html('<h1>Connection Lost</h1>');
 	if (on_air) {
 		$('#indicator').append('<h2>Render going down in '+timer+' seconds...</h2>');
@@ -135,9 +136,9 @@ function bindSpacebar() {
 			event.preventDefault();
 			if (!key_down) {
 				if (on_air) {
-					socket.send('DOWN');
+					serialSend({ command: 'DOWN' });
 				} else {
-					socket.send('UP');
+					serialSend({ command: 'UP' });
 				}
 			}
 			key_down = true;
@@ -146,7 +147,7 @@ function bindSpacebar() {
 	$(document).keyup(function(event) {
 		if (event.keyCode == 32) {
 			setTimeout(function() {	// prevents animation conflicts
-				key_down = false;		// prevents held repeats
+				key_down = false;	// prevents held repeats
 			}, FADE_DURATION);
 		}
 	});
@@ -155,14 +156,14 @@ function bindSpacebar() {
 $(document).ready(function() {
 	$('#drawing-color').change(function() {
 		if (!color_updated) {
-			socket.send('COLOR'+this.value);
+			serialSend({ command: 'COLOR', color: this.value });
 		}
 		color_updated = false;
 	});
 	$('#drawing-line-width').change(function() {
 		$('#line-info').html($('#drawing-line-width').val());
 		if (!size_updated) {
-			socket.send('SIZE'+this.value);
+			serialSend({ command: 'SIZE', size: this.value });
 		}
 		size_updated = false;
 	});

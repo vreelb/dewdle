@@ -14,6 +14,6 @@ $(document).ready(function() {
 
 	$('#clear-canvas').click(function() {
 		canvas.clear();
-		socket.send('{"objects":[],"background":""}');
+		socket.send(JSON.stringify('{"objects":[],"background":""}'));
 	});
 });

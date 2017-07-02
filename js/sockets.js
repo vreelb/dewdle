@@ -1,5 +1,9 @@
 var socket;
 
+function serialSend(msg) {
+	socket.send(JSON.stringify(msg));
+}
+
 function openSocket(URL) {
 	if ('WebSocket' in window) {
 		var open = false;
