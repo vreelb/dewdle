@@ -7,6 +7,6 @@ Steps:
 * Set PORT number in server.js.
 * Set URL and PORT in config.js.
 * Set the resolution in config.js.
-* Run server.js and open up draw.html, control.html, and render.html in your desired locations.
+* Run 'node server.js' and open up /draw, /control, and /render in your desired locations.
 
-Any keying application should be configured to load the render.html page.
+Any keying application should be configured to load the /render page.
