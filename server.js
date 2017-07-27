@@ -37,8 +37,8 @@ function socketSend(page, data) {
 	}
 }
 
-wss.on('connection', function connection(ws) {
-	var page = ws.upgradeReq.url.substring(1);		// see who connected
+wss.on('connection', function connection(ws, req) {
+	var page = req.url.substring(1);		// see who connected
 	var place = -1;
 	if (page == 'draw') {							// save that for later...
 		place = sockets_draw.push(ws);
