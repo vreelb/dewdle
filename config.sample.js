@@ -33,5 +33,6 @@ const SIZE_SELECT = [
 ];
 // the control page can select a custom size
 
-// show/hide single-page operator mode
-const SHOW_OP_MODE = true;
+// options for single-page operator mode
+// on: 'true', off: 'false', optional: 'null'
+const FORCE_OP_MODE = null;

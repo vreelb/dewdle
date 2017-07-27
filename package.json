@@ -1,6 +1,6 @@
 {
   "name": "dewdle",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An open source telestrator",
   "main": "server.js",
   "scripts": {
@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/vreelb/Dewdle.git"
+    "url": "git://github.com/vreelb/dewdle.git"
   },
   "author": "Ben Vreeland",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/vreelb/Dewdle/issues"
+    "url": "https://github.com/vreelb/dewdle/issues"
   },
-  "homepage": "https://github.com/vreelb/Dewdle#readme",
+  "homepage": "https://github.com/vreelb/dewdle#readme",
   "dependencies": {
     "express": "^4.15.3",
-    "ws": "^3.0.0",
+    "ws": "^3.1.0",
     "ws-heartbeats": "^1.0.0"
   }
 }

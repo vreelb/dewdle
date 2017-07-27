@@ -75,15 +75,15 @@ wss.on('connection', function connection(ws, req) {
 			case ('DOWN'):				// going off air
 			case ('UP'):				// going on air
 				status = data;		// keep track of the status either way
-				console.log('received "'+raw_data+'" from '+page+' '+place);
+				console.log('received \''+raw_data+'\' from '+page+' '+place);
 				break;
 			case ('COLOR'):
 				color = data;
-				console.log('received "'+raw_data+'" from '+page+' '+place);
+				console.log('received \''+raw_data+'\' from '+page+' '+place);
 				break;
 			case ('SIZE'):
 				size = data;
-				console.log('received "'+raw_data+'" from '+page+' '+place);
+				console.log('received \''+raw_data+'\' from '+page+' '+place);
 				break;
 			default:					// sending a canvas
 				temp_canvas = data;	// keep track of the canvas state
