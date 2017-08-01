@@ -1,4 +1,4 @@
-var socket;
+let socket;
 
 function serialSend(msg) {
 	socket.send(JSON.stringify(msg));
@@ -6,8 +6,8 @@ function serialSend(msg) {
 
 function openSocket(URL) {
 	if ('WebSocket' in window) {
-		var open = false;
-		var ws = new WebSocket(URL);
+		let open = false;
+		const ws = new WebSocket(URL);
 
 		ws.onopen = function() {
 			console.log('connection opened');
@@ -39,9 +39,8 @@ function openSocket(URL) {
 				openSocket(URL);
 			}, RECONNECT_INTERVAL);
 		};
-
+		return ws;
 	} else {
 		console.log('this browser does not support web sockets');
 	}
-	return ws;
 }

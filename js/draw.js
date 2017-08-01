@@ -1,4 +1,4 @@
-URL = URL + 'draw';
+URL += 'draw';
 
 var canvas;
 

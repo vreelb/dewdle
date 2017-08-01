@@ -1,4 +1,4 @@
-URL = URL + 'render';
+URL += 'render';
 
 var canvas;
 var color = {

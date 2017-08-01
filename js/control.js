@@ -1,4 +1,4 @@
-URL = URL + 'control';
+URL += 'control';
 
 $(document).ready(function() {
 	$('#drawing-color').val(COLOR_SELECT[0]);	// set default brush color

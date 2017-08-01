@@ -1,4 +1,4 @@
-// URL of the server (include trailing slash)
+// URL of the server
 var URL = 'ws://localhost:12180/';
 //var URL = 'ws://' + location.hostname + ':12180/';
 // be sure to update the PORT in server.js as well
@@ -36,3 +36,10 @@ const SIZE_SELECT = [
 // options for single-page operator mode
 // on: 'true', off: 'false', optional: 'null'
 const FORCE_OP_MODE = null;
+
+
+
+// catch lack of slash in URL
+if (URL[URL.length - 1] != '/') {
+	URL += '/';
+}
