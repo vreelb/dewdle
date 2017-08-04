@@ -9,6 +9,9 @@ app.use('/draw', express.static(__dirname + '/draw.html'));
 app.use('/control', express.static(__dirname + '/control.html'));
 app.use('/render', express.static(__dirname + '/render.html'));
 app.use('/', express.static(__dirname));
+app.all('*', function (req, res) {
+	res.redirect('/');
+});
 app.listen(80, function () {
 	console.log('Web server started on port 80...')
 });
