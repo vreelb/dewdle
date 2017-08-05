@@ -6,14 +6,9 @@ For full installation details please see [INSTALL](https://github.com/vreelb/Dew
 ### Dependencies
 * [Node.js](https://nodejs.org/) ([MIT](https://opensource.org/licenses/MIT)) - Communication between the control panel and CEF keyer is done using a simple Node server.
 
-Installed by running `npm install` in the project root:
-* [ws](http://websockets.github.io/ws/) ([MIT](https://opensource.org/licenses/MIT)) - Node needs web socket support.
-* [ws-heartbeats](https://www.npmjs.com/package/ws-heartbeats) ([ISC](https://opensource.org/licenses/ISC)) - Helps keep web sockets alive.
-* [Express](https://expressjs.com/) ([MIT](https://opensource.org/licenses/MIT)) - Serves as the http server.
-
 ### Recommended Keyer Programs
 For usage in a streaming environment:
-* [OBS Studio](https://obsproject.com/) ([GPL-2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)) - Version 18.0 includes 'Browser Plugin', earlier versions will need to manually install it.
+* [OBS Studio](https://obsproject.com/) ([GPL-2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)) - Versions 18.0 and up include 'Browser Plugin', earlier versions will need to manually install it.
 
 For usage in a broadcast environment:
 * [Exavideo Exacore Keyer](https://github.com/exavideo/exacore) ([GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)) - The Exacore keyer is used for overlaying graphics onto a video feed.
@@ -21,9 +16,18 @@ For usage in a broadcast environment:
 
 ## Usage
 Dewdle is split into 3 pages (each of which can have multiple instances):
-* Draw - Designed to be operated by talent to create drawings; has full drawing controls.
-* Control - Designed for a control room operator; previews the drawing and controls live status.
-* Render - Designed to be what is transparently overlaid onto a video feed, any program doing that should point at this page.
+### Draw
+* Designed to be operated by talent to create drawings.
+* Has full drawing controls and optional live status control.
+
+### Control
+* Designed for a control room operator.
+* Previews the drawing and controls live status.
+* Not needed if live status control is enabled on draw pages.
+
+### Render
+* Designed to be what is transparently overlaid onto a video feed
+* Any encoding program should load this page.
 
 ## License
 Dewdle is licensed under GPL-3.0: [LICENSE](https://github.com/vreelb/Dewdle/blob/master/LICENSE)
