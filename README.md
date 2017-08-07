@@ -35,3 +35,4 @@ Dewdle is licensed under GPL-3.0: [LICENSE](https://github.com/vreelb/Dewdle/blo
 The following are included, whole or in part, within this project. All included materials must have compatible licenses.
 * [jQuery](http://jquery.com/) ([MIT](https://jquery.org/license/))
 * [Fabric.js](http://fabricjs.com/) ([MIT](https://opensource.org/licenses/MIT))
+* [FileSaver.js](https://github.com/eligrey/FileSaver.js) ([MIT](https://opensource.org/licenses/MIT))

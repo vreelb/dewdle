@@ -16,4 +16,14 @@ $(document).ready(function() {
 		canvas.clear();
 		socket.send(JSON.stringify('{"objects":[],"background":""}'));
 	});
+
+	$('#save-png').click(function () {
+		$('#c').get(0).toBlob(function (blob) {
+			saveAs(blob, 'canvas.png');
+		});
+	});
+	$('#save-json').click(function () {
+		let blob = new Blob([JSON.stringify(canvas)], { type: 'application/json; charset=utf-8' });
+		saveAs(blob, 'canvas.json');
+	});
 });

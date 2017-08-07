@@ -2,6 +2,7 @@
 <head>
 <script src="js/jquery.min.js"></script>
 <script src="js/fabric.min.js"></script>
+<script src="js/filesaver.min.js"></script>
 <script src="config.js"></script>
 <script src="js/control.js"></script>
 <script src="js/sockets.js"></script>
@@ -10,7 +11,7 @@
 </head>
 	<body>
 		<div id="main">
-			<div id="canvas-contain" style="max-width:960;">
+			<div id="canvas-contain" style="max-width: 960" oncontextmenu="return false">
 				<div id="indicator"></div>
 				<canvas id="c" class="lower-canvas"></canvas>
 			</div>
@@ -24,7 +25,10 @@
 				<label for="drawing-line-width">Brush size:</label>
 				<span id="line-info"></span><input type="range" min="1" max="5" id="drawing-line-width"><br>
 				<br>
-				Spacebar controls live status.
+				Spacebar controls live status.<br>
+				<br>
+				<button id="save-png" type="button">Save Canvas (as PNG)</button>
+				<button id="save-json" type="button">Save Canvas (as JSON)</button>
 			</div>
 		</div>
 	</body>
