@@ -2,23 +2,8 @@ URL += 'draw';
 
 var canvas;
 
-function sendCanvas() { // set desired width in CANVAS_WIDTH
-	var canvas2 = new fabric.Canvas();
-	canvas2.loadFromJSON(JSON.stringify(canvas)); // duplicate ui canvas
-	if (canvas.width != CANVAS_WIDTH) {
-		var scale = CANVAS_WIDTH / canvas.width;
-		var obj = canvas2.getObjects();
-		for (var i in obj) {
-			obj[i].scaleX = obj[i].scaleX * scale;
-			obj[i].scaleY = obj[i].scaleY * scale;
-			obj[i].left = obj[i].left * scale;
-			obj[i].top = obj[i].top * scale;
-		}
-		canvas2.setWidth(canvas.getWidth() * scale);
-		canvas2.setHeight(canvas.getHeight() * scale);
-	}
-
-	socket.send(JSON.stringify(canvas2));
+function sendCanvas() {
+	socket.send(getFullCanvasJSON());
 }
 
 $(document).ready( function() {
