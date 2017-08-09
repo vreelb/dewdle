@@ -1,12 +1,14 @@
-var canvas;
+let canvas;
 
-function getFullCanvasJSON() { // set desired width in CANVAS_WIDTH
-	var canvas2 = new fabric.Canvas();
+function getNewCanvasJSON(newWidth) {
+	newWidth = newWidth || CANVAS_WIDTH;
+
+	let canvas2 = new fabric.Canvas();
 	canvas2.loadFromJSON(JSON.stringify(canvas)); // duplicate ui canvas
-	if (canvas.width != CANVAS_WIDTH) {
-		var scale = CANVAS_WIDTH / canvas.width;
-		var obj = canvas2.getObjects();
-		for (var i in obj) {
+	if (canvas.width != newWidth) {
+		const scale = newWidth / canvas.width;
+		let obj = canvas2.getObjects();
+		for (let i in obj) {
 			obj[i].scaleX = obj[i].scaleX * scale;
 			obj[i].scaleY = obj[i].scaleY * scale;
 			obj[i].left = obj[i].left * scale;
@@ -22,16 +24,9 @@ function resizeCanvas(newWidth) {
 	newWidth = newWidth || $('#canvas-contain').width();
 
 	if (canvas.width != newWidth) {
-		var scale = newWidth / canvas.width;
-		var obj = canvas.getObjects();
-		for (var i in obj) {
-			obj[i].scaleX = obj[i].scaleX * scale;
-			obj[i].scaleY = obj[i].scaleY * scale;
-			obj[i].left = obj[i].left * scale;
-			obj[i].top = obj[i].top * scale;
-			obj[i].setCoords();
-		}
+		canvas.loadFromJSON(getNewCanvasJSON(newWidth));
 
+		const scale = newWidth / canvas.width;
 		canvas.setWidth(canvas.getWidth() * scale);
 		canvas.setHeight(canvas.getHeight() * scale);
 		canvas.renderAll();
@@ -51,7 +46,7 @@ function resizeCanvas(newWidth) {
 	}
 }
 
-var on_air = false;
+let on_air = false;
 function onAir() {
 	$('#indicator').css({
 		'width': canvas.getWidth()-20,
@@ -69,10 +64,10 @@ function offAir() {
 	on_air = false;
 }
 
-var color_updated = false;
-var size_updated = false;
+let color_updated = false;
+let size_updated = false;
 function evalMessage(msg) {
-	var data = JSON.parse(msg);
+	let data = JSON.parse(msg);
 	switch (data.command) {
 		case ('UP'):				// going on air
 			onAir();
@@ -100,7 +95,7 @@ function evalMessage(msg) {
 	}
 }
 
-var dissappear, countdown, timer;
+let dissappear, countdown, timer;
 function handleConnect() {
 	$('#indicator').css({
 		'background-image': 'none'
@@ -150,7 +145,7 @@ $(window).resize(function() { // handle ui canvas size changes
 });
 
 function bindSpacebar() {
-	var key_down = false;
+	let key_down = false;
 	$(document).keydown(function(event) {
 		if (event.keyCode == 32) {	// spacebar for up/down control
 			event.preventDefault();

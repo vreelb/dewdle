@@ -1,9 +1,7 @@
 URL += 'draw';
 
-var canvas;
-
 function sendCanvas() {
-	socket.send(getFullCanvasJSON());
+	socket.send(getNewCanvasJSON(CANVAS_WIDTH));
 }
 
 $(document).ready( function() {

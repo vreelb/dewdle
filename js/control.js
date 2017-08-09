@@ -30,13 +30,13 @@ $(document).ready(function() {
 		let tempCanvas = new fabric.Canvas();
 		tempCanvas.setWidth(CANVAS_WIDTH);
 		tempCanvas.setHeight(CANVAS_HEIGHT);
-		tempCanvas.loadFromJSON(getFullCanvasJSON());
+		tempCanvas.loadFromJSON(getNewCanvasJSON(CANVAS_WIDTH));
 
 		let blob = dataURLtoBlob( tempCanvas.toDataURL({ format: 'png' }));
 		saveAs(blob, 'canvas.png');
 	});
 	$('#save-json').click(function () {
-		let blob = new Blob([getFullCanvasJSON()], { type: 'application/json; charset=utf-8' });
+		let blob = new Blob([getNewCanvasJSON(CANVAS_WIDTH)], { type: 'application/json; charset=utf-8' });
 		saveAs(blob, 'canvas.json');
 	});
 });
