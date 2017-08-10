@@ -1,24 +1,24 @@
 URL += 'render';
 
-var canvas;
-var color = {
+let canvas;
+let color = {
 	command: 'COLOR',
 	color: COLOR_SELECT[0]
 }
-var size = {
+let size = {
 	command: 'SIZE',
 	size: SIZE_SELECT[0]
 }
 
 function evalMessage(msg) {
-	var data = JSON.parse(msg);
+	let data = JSON.parse(msg);
 	switch (data.command) {
-		case ('UP'):			// going on air
+		case ('UP'): // going on air
 			if (!$('#c').is(':visible')) {
 				$('#c').fadeIn(FADE_DURATION);
 			}
 			break;
-		case ('DOWN'):		// going off air
+		case ('DOWN'): // going off air
 			if ($('#c').is(':visible')) {
 				$('#c').fadeOut(FADE_DURATION);
 			}
@@ -34,7 +34,7 @@ function evalMessage(msg) {
 	}
 }
 
-var dissappear = false;
+let dissappear = false;
 function handleConnect() {
 	if (dissappear) {
 		clearTimeout(dissappear);

@@ -46,6 +46,10 @@ function resizeCanvas(newWidth) {
 	}
 }
 
+function sendCanvas() {
+	socket.send(getNewCanvasJSON(CANVAS_WIDTH));
+}
+
 let on_air = false;
 function onAir() {
 	$('#indicator').css({
@@ -147,12 +151,13 @@ $(window).resize(function() { // handle ui canvas size changes
 function bindSpacebar() {
 	let key_down = false;
 	$(document).keydown(function(event) {
-		if (event.keyCode == 32) {	// spacebar for up/down control
+		if (event.keyCode == 32) { // spacebar for up/down control
 			event.preventDefault();
 			if (!key_down) {
 				if (on_air) {
 					serialSend({ command: 'DOWN' });
 				} else {
+					sendCanvas();
 					serialSend({ command: 'UP' });
 				}
 			}
@@ -161,8 +166,8 @@ function bindSpacebar() {
 	});
 	$(document).keyup(function(event) {
 		if (event.keyCode == 32) {
-			setTimeout(function() {	// prevents animation conflicts
-				key_down = false;	// prevents held repeats
+			setTimeout(function() { // prevents animation conflicts
+				key_down = false; // prevents held repeats
 			}, FADE_DURATION);
 		}
 	});

@@ -16,9 +16,9 @@ app.listen(80, function () {
 	console.log('Web server started on port 80...')
 });
 
-var sockets_draw = [], sockets_control = [], sockets_render = [];
-var temp_canvas = '{"objects":[],"background":""}';
-var status, color, size;
+let sockets_draw = [], sockets_control = [], sockets_render = [];
+let temp_canvas = '{"objects":[],"background":""}';
+let status, color, size;
 
 function stringSend(socket, msg) {
 	socket.send(JSON.stringify(msg));
@@ -41,13 +41,13 @@ function socketSend(page, data) {
 }
 
 wss.on('connection', function connection(ws, req) {
-	var page = req.url.substring(1);		// see who connected
-	var place = -1;
-	if (page == 'draw') {							// save that for later...
+	const page = req.url.substring(1); // see who connected
+	let place = -1;
+	if (page === 'draw') { // save that for later...
 		place = sockets_draw.push(ws);
-	} else if (page == 'control') {
+	} else if (page === 'control') {
 		place = sockets_control.push(ws);
-	} else if (page == 'render') {
+	} else if (page === 'render') {
 		place = sockets_render.push(ws);
 	}
 	place--;
@@ -55,18 +55,19 @@ wss.on('connection', function connection(ws, req) {
 
 	sendHeartbeats(ws, {'heartbeatTimeout':30000, 'heartbeatInterval':10000});
 
-	if ((page === 'draw')||(page === 'control')) {
+	// Send current status of everything
+	if (color) {
+		stringSend(ws, color);
+	}
+	if (size) {
+		stringSend(ws, size);
+	}
+	if ((page === 'draw') || (page === 'control')) {
 		stringSend(ws, temp_canvas);
 		if (status) {
 			stringSend(ws, status);
 		} else {
 			stringSend(ws, { command: 'DOWN' });
-		}
-		if (color) {
-			stringSend(ws, color);
-		}
-		if (size) {
-			stringSend(ws, size);
 		}
 	} else if (status && (status.command === 'DOWN')) {
 		stringSend(ws, temp_canvas);
@@ -74,24 +75,24 @@ wss.on('connection', function connection(ws, req) {
 
 	ws.on('message', function incoming(raw_data) {
 		data = JSON.parse(raw_data);
+		let message = 'received \'' + raw_data + '\'';
 		switch (data.command) {
-			case ('DOWN'):				// going off air
-			case ('UP'):				// going on air
-				status = data;		// keep track of the status either way
-				console.log('received \''+raw_data+'\' from '+page+' '+place);
+			case ('DOWN'): // going off air
+			case ('UP'): // going on air
+				status = data; // keep track of the status
 				break;
 			case ('COLOR'):
 				color = data;
-				console.log('received \''+raw_data+'\' from '+page+' '+place);
 				break;
 			case ('SIZE'):
 				size = data;
-				console.log('received \''+raw_data+'\' from '+page+' '+place);
 				break;
-			default:					// sending a canvas
-				temp_canvas = data;	// keep track of the canvas state
-				console.log('received canvas update from '+page+' '+place);
+			default: // sending a canvas
+				temp_canvas = data; // keep track of the canvas
+				message = 'received canvas update';
 		}
+		message += ' from ' + page + ' ' + place;
+		console.log(message);
 		socketSend('draw', data);
 		socketSend('control', data);
 		socketSend('render', data);
