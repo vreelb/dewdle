@@ -39,4 +39,24 @@ $(document).ready(function() {
 		let blob = new Blob([getNewCanvasJSON(CANVAS_WIDTH)], { type: 'application/json; charset=utf-8' });
 		saveAs(blob, 'canvas.json');
 	});
+
+	$('#load-json').click(function () {
+		if ($('#load-json-text').val().length < 1) {
+			return;
+		}
+		try {
+			JSON.parse($('#load-json-text').val());
+		} catch (e) {
+			$('#load-json-text').val('');
+			alert('Invalid JSON, loading aborted.');
+			return;
+		}
+
+		canvas.setWidth(CANVAS_WIDTH);
+		canvas.setHeight(CANVAS_HEIGHT);
+		canvas.loadFromJSON($('#load-json-text').val(), canvas.renderAll.bind(canvas));
+		resizeCanvas();
+		sendCanvas();
+		$('#load-json-text').val('');
+	});
 });
