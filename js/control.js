@@ -44,19 +44,24 @@ $(document).ready(function() {
 		if ($('#load-json-text').val().length < 1) {
 			return;
 		}
-		try {
-			JSON.parse($('#load-json-text').val());
-		} catch (e) {
-			$('#load-json-text').val('');
-			alert('Invalid JSON, loading aborted.');
-			return;
-		}
-
+		let abort = false;
+		let oldWidth = canvas.getWidth();
+		let oldHeight = canvas.getHeight();
 		canvas.setWidth(CANVAS_WIDTH);
 		canvas.setHeight(CANVAS_HEIGHT);
-		canvas.loadFromJSON($('#load-json-text').val(), canvas.renderAll.bind(canvas));
-		resizeCanvas();
-		sendCanvas();
-		$('#load-json-text').val('');
+		try {
+			canvas.loadFromJSON($('#load-json-text').val(), canvas.renderAll.bind(canvas));
+		} catch (e) {
+			abort = true;
+			canvas.setWidth(oldWidth);
+			canvas.setHeight(oldHeight);
+			alert('Invalid JSON, loading aborted.');
+		} finally {
+			$('#load-json-text').val('');
+			if (!abort) {
+				resizeCanvas();
+				sendCanvas();
+			}
+		}
 	});
 });
