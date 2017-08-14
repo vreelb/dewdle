@@ -4,9 +4,8 @@ Steps:
 * Download or clone the repo to where you want to run it.
 * Install Node.js, which should come with npm (node package manager).
 * 'npm install' in the repo directory will install all dependencies.
-* Set PORT number in server.js.
-* Set URL and PORT in config.js.
-* Set the resolution in config.js.
+* Set BASE_URL, WEBSOCKET_PORT, and WEBSERVER_PORT in config.json.
+* Set the canvas resolution in config.json.
 * Run 'node server.js' and open up /draw, /control, and /render in your desired locations.
 
 Any keying application should be configured to load the /render page.

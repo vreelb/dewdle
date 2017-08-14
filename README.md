@@ -19,14 +19,21 @@ Dewdle is split into 3 pages (each of which can have multiple instances):
 ### Draw
 * Designed to be operated by talent to create drawings.
 * Has full drawing controls and optional live status control.
+* Set `FORCE_OP_MODE` to `true` to enable live status control.
+* Set `FORCE_OP_MODE` to `null` for a button to enable live status control.
+* Set `FORCE_OP_MODE` to `false` to disable live status control.
 
 ### Control
 * Designed for a control room operator.
 * Previews the drawing and controls live status.
-* Not needed if live status control is enabled on draw pages.
+* Can adjust drawing controls for talent.
+* Not strictly needed if live status control is enabled on draw pages.
 
 ### Render
-* Designed to be what is transparently overlaid onto a video feed
+* Designed to be what is transparently overlaid onto a video feed.
+* Canvas dimensions will be `CANVAS_WIDTH` by `CANVAS_HEIGHT`.
+* `FADE_DURATION` controls how long it takes to show/hide the canvas.
+* `FADE_TIMER` controls how long the canvas stays up on connection loss.
 * Any encoding program should load this page.
 
 ## License
