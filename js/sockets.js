@@ -1,4 +1,7 @@
-let socket;
+// catch lack of slash in URL
+if (URL[URL.length - 1] != '/') {
+	URL += '/';
+}
 
 function serialSend(msg) {
 	socket.send(JSON.stringify(msg));
