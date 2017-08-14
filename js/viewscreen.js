@@ -1,7 +1,7 @@
 let canvas;
 
 function getNewCanvasJSON(newWidth) {
-	newWidth = newWidth || CANVAS_WIDTH;
+	newWidth = newWidth || CONFIG.CANVAS_WIDTH;
 
 	let canvas2 = new fabric.Canvas();
 	canvas2.loadFromJSON(JSON.stringify(canvas)); // duplicate ui canvas
@@ -47,7 +47,7 @@ function resizeCanvas(newWidth) {
 }
 
 function sendCanvas() {
-	socket.send(getNewCanvasJSON(CANVAS_WIDTH));
+	socket.send(getNewCanvasJSON(CONFIG.CANVAS_WIDTH));
 }
 
 let on_air = false;
@@ -92,8 +92,8 @@ function evalMessage(msg) {
 			}
 			break;
 		default:
-			canvas.setWidth(CANVAS_WIDTH);
-			canvas.setHeight(CANVAS_HEIGHT);
+			canvas.setWidth(CONFIG.CANVAS_WIDTH);
+			canvas.setHeight(CONFIG.CANVAS_HEIGHT);
 			canvas.loadFromJSON(msg, canvas.renderAll.bind(canvas));
 			resizeCanvas();
 	}
@@ -104,7 +104,7 @@ function handleConnect() {
 	$('#indicator').css({
 		'background-image': 'none'
 	}).html('');
-	timer = FADE_TIMER/1000;
+	timer = CONFIG.FADE_TIMER/1000;
 	if (dissappear) {
 		clearTimeout(dissappear);
 		clearInterval(countdown);
@@ -125,7 +125,7 @@ function handleDisconnect() {
 		console.log('connection not resumed, by now we\'re not live');
 		dissappear = false;
 		offAir();
-	}, FADE_TIMER);
+	}, CONFIG.FADE_TIMER);
 	if (on_air) {
 		timer--;
 		countdown = setInterval(function() {
@@ -168,7 +168,7 @@ function bindSpacebar() {
 		if (event.keyCode == 32) {
 			setTimeout(function() { // prevents animation conflicts
 				key_down = false; // prevents held repeats
-			}, FADE_DURATION);
+			}, CONFIG.FADE_DURATION);
 		}
 	});
 }

@@ -1,7 +1,4 @@
-// catch lack of slash in URL
-if (URL[URL.length - 1] != '/') {
-	URL += '/';
-}
+let CONFIG;
 
 function serialSend(msg) {
 	socket.send(JSON.stringify(msg));
@@ -31,7 +28,7 @@ function openSocket(URL) {
 					console.log('trying to reconnect...');
 					open = false;
 					openSocket(URL);
-				}, RECONNECT_INTERVAL);
+				}, CONFIG.RECONNECT_INTERVAL);
 			}
 		};
 
@@ -40,7 +37,7 @@ function openSocket(URL) {
 			setTimeout(function() {
 				console.log('trying to connect again...');
 				openSocket(URL);
-			}, RECONNECT_INTERVAL);
+			}, CONFIG.RECONNECT_INTERVAL);
 		};
 		return ws;
 	} else {

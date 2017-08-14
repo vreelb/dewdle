@@ -1,13 +1,11 @@
-URL += 'render';
-
 let canvas;
 let color = {
 	command: 'COLOR',
-	color: COLOR_SELECT[0]
+	color: "#000"
 }
 let size = {
 	command: 'SIZE',
-	size: SIZE_SELECT[0]
+	size: "#000"
 }
 
 function evalMessage(msg) {
@@ -15,12 +13,12 @@ function evalMessage(msg) {
 	switch (data.command) {
 		case ('UP'): // going on air
 			if (!$('#c').is(':visible')) {
-				$('#c').fadeIn(FADE_DURATION);
+				$('#c').fadeIn(CONFIG.FADE_DURATION);
 			}
 			break;
 		case ('DOWN'): // going off air
 			if ($('#c').is(':visible')) {
-				$('#c').fadeOut(FADE_DURATION);
+				$('#c').fadeOut(CONFIG.FADE_DURATION);
 			}
 			break;
 		case ('COLOR'):
@@ -52,18 +50,22 @@ function handleDisconnect() {
 		dissappear = setTimeout(function() {
 			console.log('connection not resumed, going down');
 			dissappear = false;
-			$('#c').fadeOut(FADE_DURATION, function() {
+			$('#c').fadeOut(CONFIG.FADE_DURATION, function() {
 				canvas.clear();
 			});
-		}, FADE_TIMER);
+		}, CONFIG.FADE_TIMER);
 	} else {
 		canvas.clear();
 	}
 }
 
 $(document).ready(function() {
-	canvas = this.__canvas = new fabric.StaticCanvas('c');
-	canvas.setWidth(CANVAS_WIDTH);
-	canvas.setHeight(CANVAS_HEIGHT);
-	openSocket(URL);
+	$.getJSON('./config.json', function (json) {
+		CONFIG = json;
+		let URL = CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/render';
+		canvas = this.__canvas = new fabric.StaticCanvas('c');
+		canvas.setWidth(CONFIG.CANVAS_WIDTH);
+		canvas.setHeight(CONFIG.CANVAS_HEIGHT);
+		openSocket(URL);
+	});
 });
