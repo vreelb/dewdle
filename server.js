@@ -1,8 +1,9 @@
-const PORT = '12180';
+const WEBSOCKET_PORT = 12180;
+const WEBSERVER_PORT = 80;
 
 const express = require('express');
 const app = express();
-const wss = new (require('ws')).Server({host: '::', port: PORT});
+const wss = new (require('ws')).Server({ host: '::', port: WEBSOCKET_PORT});
 const sendHeartbeats = require('ws-heartbeats');
 
 app.use('/draw', express.static(__dirname + '/draw.html'));
@@ -12,8 +13,8 @@ app.use('/', express.static(__dirname));
 app.all('*', function (req, res) {
 	res.redirect('/');
 });
-app.listen(80, function () {
-	console.log('Web server started on port 80...')
+app.listen(WEBSERVER_PORT, function () {
+	console.log('Web server started on port ' + WEBSERVER_PORT + '...')
 });
 
 let sockets_draw = [], sockets_control = [], sockets_render = [];
@@ -110,4 +111,4 @@ wss.on('connection', function connection(ws, req) {
 	});
 });
 
-console.log('Websocket server listening on port '+PORT+'...');
+console.log('Websocket server listening on port ' + WEBSOCKET_PORT + '...');
