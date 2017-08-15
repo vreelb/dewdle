@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
 const CONFIG = require('./config.json');
-const wss = new (require('ws')).Server({ host: '::', port: CONFIG.WEBSOCKET_PORT});
+const wss = new (require('ws')).Server({
+	host: '::',
+	port: CONFIG.WEBSOCKET_PORT
+}, function() {
+	console.log('Websocket server listening on port ' + CONFIG.WEBSOCKET_PORT + '...');
+});
 const sendHeartbeats = require('ws-heartbeats');
 
 app.use('/draw', express.static(__dirname + '/draw.html'));
@@ -108,5 +113,3 @@ wss.on('connection', function connection(ws, req) {
 		console.log(page+' '+place+' disconnected');
 	});
 });
-
-console.log('Websocket server listening on port ' + CONFIG.WEBSOCKET_PORT + '...');

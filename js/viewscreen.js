@@ -73,10 +73,10 @@ let size_updated = false;
 function evalMessage(msg) {
 	let data = JSON.parse(msg);
 	switch (data.command) {
-		case ('UP'):				// going on air
+		case ('UP'): // going on air
 			onAir();
 			break;
-		case ('DOWN'):				// going off air
+		case ('DOWN'): // going off air
 			offAir();
 			break;
 		case ('COLOR'):
