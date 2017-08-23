@@ -1,3 +1,4 @@
+"use strict";
 const express = require('express');
 const app = express();
 const CONFIG = require('./config.json');
@@ -55,7 +56,7 @@ wss.on('connection', function connection(ws, req) {
 		place = sockets_render.push(ws);
 	}
 	place--;
-	console.log(page+' '+place+' connected');
+	console.log(page + ' ' + place + ' connected');
 
 	sendHeartbeats(ws, {'heartbeatTimeout':30000, 'heartbeatInterval':10000});
 
@@ -78,7 +79,7 @@ wss.on('connection', function connection(ws, req) {
 	}
 
 	ws.on('message', function incoming(raw_data) {
-		data = JSON.parse(raw_data);
+		let data = JSON.parse(raw_data);
 		let message = 'received \'' + raw_data + '\'';
 		switch (data.command) {
 			case ('DOWN'): // going off air
@@ -110,6 +111,6 @@ wss.on('connection', function connection(ws, req) {
 		} else if (page === 'render') {
 			delete sockets_render[place];
 		}
-		console.log(page+' '+place+' disconnected');
+		console.log(page + ' ' + place + ' disconnected');
 	});
 });
