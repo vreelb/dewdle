@@ -22,7 +22,7 @@ app.listen(CONFIG.WEBSERVER_PORT, function () {
 });
 
 let sockets_draw = [], sockets_control = [], sockets_render = [];
-let temp_canvas = '{"objects":[],"background":""}';
+let temp_canvas = CONFIG.DEFAULT_CANVAS;
 let status, color, size;
 
 function stringSend(socket, msg) {

@@ -1,27 +1,28 @@
 {
-	"BASE_URL": "ws://localhost",
-	"WEBSOCKET_PORT": 12181,
-	"WEBSERVER_PORT": 12180,
-	"RECONNECT_INTERVAL": 1000,
+  "BASE_URL": "ws://localhost",
+  "WEBSOCKET_PORT": 12181,
+  "WEBSERVER_PORT": 12180,
+  "RECONNECT_INTERVAL": 1000,
 
-	"CANVAS_WIDTH": 1920,
-	"CANVAS_HEIGHT": 1080,
+  "CANVAS_WIDTH": 1920,
+  "CANVAS_HEIGHT": 1080,
 
-	"FADE_DURATION": 500,
-	"FADE_TIMER": 5000,
+  "FADE_DURATION": 500,
+  "FADE_TIMER": 5000,
 
-	"COLOR_SELECT": [
-		"#FFFF00",
-		"#FF0000",
-		"#0000FF",
-		"#000000"
-	],
-	"SIZE_SELECT": [
-		1,
-		2,
-		3,
-		4
-	],
+  "COLOR_SELECT": [
+    "#FFFF00",
+    "#FF0000",
+    "#0000FF",
+    "#000000"
+  ],
+  "SIZE_SELECT": [
+    1,
+    2,
+    3,
+    4
+  ],
 
-	"FORCE_OP_MODE": null
+  "FORCE_OP_MODE": null,
+  "DEFAULT_CANVAS": {}
 }
