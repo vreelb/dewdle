@@ -1,116 +1,156 @@
-"use strict";
+'use strict';
 const express = require('express');
 const app = express();
 const CONFIG = require('./config.json');
-const wss = new (require('ws')).Server({
-	host: '::',
-	port: CONFIG.WEBSOCKET_PORT
-}, function() {
-	console.log('Websocket server listening on port ' + CONFIG.WEBSOCKET_PORT + '...');
-});
+const wss = new (require('ws').Server)(
+  {
+    host: '::',
+    port: CONFIG.WEBSOCKET_PORT,
+  },
+  function () {
+    console.log(
+      'Websocket server listening on port ' + CONFIG.WEBSOCKET_PORT + '...'
+    );
+  }
+);
 const sendHeartbeats = require('ws-heartbeats');
+
+// Page Constants
+const PAGE_DRAW = 'draw';
+const PAGE_CONTROL = 'control';
+const PAGE_RENDER = 'render';
+
+// Command Constants
+const COMMAND_UP = 'UP';
+const COMMAND_DOWN = 'DOWN';
+const COMMAND_COLOR = 'COLOR';
+const COMMAND_SIZE = 'SIZE';
 
 app.use('/draw', express.static(__dirname + '/draw.html'));
 app.use('/control', express.static(__dirname + '/control.html'));
 app.use('/render', express.static(__dirname + '/render.html'));
 app.use('/', express.static(__dirname));
 app.all('*', function (req, res) {
-	res.redirect('/');
+  res.redirect('/');
 });
 app.listen(CONFIG.WEBSERVER_PORT, function () {
-	console.log('Web server started on port ' + CONFIG.WEBSERVER_PORT + '...')
+  console.log('Web server started on port ' + CONFIG.WEBSERVER_PORT + '...');
 });
 
-let sockets_draw = [], sockets_control = [], sockets_render = [];
-let temp_canvas = CONFIG.DEFAULT_CANVAS;
+const socketsDraw    = [];
+const socketsControl = [];
+const socketsRender  = [];
+let tempCanvas = CONFIG.DEFAULT_CANVAS;
 let status, color, size;
 
+// Sends the stringified message object over the given websocket
 function stringSend(socket, msg) {
-	socket.send(JSON.stringify(msg));
+  socket.send(JSON.stringify(msg));
 }
 
+// Sends the data to all pages of the given type
 function socketSend(page, data) {
-	if (page === 'draw') {
-		sockets_draw.forEach(function (sock) {
-			stringSend(sock, data);
-		});
-	} else if (page === 'control') {
-		sockets_control.forEach(function (sock) {
-			stringSend(sock, data);
-		});
-	} else if (page === 'render') {
-		sockets_render.forEach(function (sock) {
-			stringSend(sock, data);
-		});
-	}
+  let workingSockets = [];
+
+  switch (page) {
+    case PAGE_DRAW:
+      workingSockets = socketsDraw;
+      break;
+    case PAGE_CONTROL:
+      workingSockets = socketsControl;
+      break;
+    case PAGE_RENDER:
+      workingSockets = socketsRender;
+      break;
+  }
+
+  workingSockets.forEach(function (sock) {
+    stringSend(sock, data);
+  });
 }
 
 wss.on('connection', function connection(ws, req) {
-	const page = req.url.substring(1); // see who connected
-	let place = -1;
-	if (page === 'draw') { // save that for later...
-		place = sockets_draw.push(ws);
-	} else if (page === 'control') {
-		place = sockets_control.push(ws);
-	} else if (page === 'render') {
-		place = sockets_render.push(ws);
-	}
-	place--;
-	console.log(page + ' ' + place + ' connected');
+  const page = req.url.substring(1); // see who connected
+  let place = -1;
 
-	sendHeartbeats(ws, {'heartbeatTimeout':30000, 'heartbeatInterval':10000});
+  // Add current connection to the correct pool based on page type
+  switch (page) {
+    case PAGE_DRAW:
+      place = socketsDraw.push(ws);
+      break;
+    case PAGE_CONTROL:
+      place = socketsControl.push(ws);
+      break;
+    case PAGE_RENDER:
+      place = socketsRender.push(ws);
+      break;
+  }
 
-	// Send current status of everything
-	if (color) {
-		stringSend(ws, color);
-	}
-	if (size) {
-		stringSend(ws, size);
-	}
-	if ((page === 'draw') || (page === 'control')) {
-		stringSend(ws, temp_canvas);
-		if (status) {
-			stringSend(ws, status);
-		} else {
-			stringSend(ws, { command: 'DOWN' });
-		}
-	} else if (status && (status.command === 'DOWN')) {
-		stringSend(ws, temp_canvas);
-	}
+  console.log(page + ' ' + --place + ' connected');
 
-	ws.on('message', function incoming(raw_data) {
-		let data = JSON.parse(raw_data);
-		let message = 'received \'' + raw_data + '\'';
-		switch (data.command) {
-			case ('DOWN'): // going off air
-			case ('UP'): // going on air
-				status = data; // keep track of the status
-				break;
-			case ('COLOR'):
-				color = data;
-				break;
-			case ('SIZE'):
-				size = data;
-				break;
-			default: // sending a canvas
-				temp_canvas = data; // keep track of the canvas
-				message = 'received canvas update';
-		}
-		message += ' from ' + page + ' ' + place;
-		console.log(message);
-		socketSend('draw', data);
-		socketSend('control', data);
-		socketSend('render', data);
-	});
+  // Keep websocket connection alive
+  sendHeartbeats(ws, { heartbeatTimeout: 30000, heartbeatInterval: 10000 });
 
-	ws.on('close', function () {
-		if (page === 'draw') {
-			delete sockets_draw[place];
-		} else if (page === 'control') {
-			delete sockets_control[place];
-		} else if (page === 'render') {
-			delete sockets_render[place];
-		}
-		console.log(page + ' ' + place + ' disconnected');
-	});
+  // Send current configuration and canvas to new connections
+  if (color) {
+    stringSend(ws, color);
+  }
+  if (size) {
+    stringSend(ws, size);
+  }
+  if (page === PAGE_DRAW || page === PAGE_CONTROL) {
+    stringSend(ws, tempCanvas);
+    if (status) {
+      stringSend(ws, status);
+    } else {
+      stringSend(ws, { command: COMMAND_DOWN });
+    }
+  } else if (status && status.command === COMMAND_DOWN) {
+    stringSend(ws, tempCanvas);
+  }
+
+  ws.on('message', function incoming(rawData) {
+    const data = JSON.parse(rawData);
+    let message = '';
+
+    switch (data.command) {
+      case COMMAND_DOWN: // going off air
+      case COMMAND_UP: // going on air
+        status = data; // keep track of the status
+        break;
+      case COMMAND_COLOR:
+        color = data;
+        break;
+      case COMMAND_SIZE:
+        size = data;
+        break;
+      default:
+        // sending a canvas
+        tempCanvas = data; // keep track of the canvas
+        message = 'received canvas update';
+    }
+
+    message = message !== '' ? message : "received '" + rawData + "'";
+    console.log((message += ' from ' + page + ' ' + place));
+
+    socketSend(PAGE_DRAW, data);
+    socketSend(PAGE_CONTROL, data);
+    socketSend(PAGE_RENDER, data);
+  });
+
+  ws.on('close', function () {
+    switch (page) {
+      case PAGE_DRAW:
+        delete socketsDraw[place];
+        break;
+      case PAGE_CONTROL:
+        delete socketsControl[place];
+        break;
+      case PAGE_RENDER:
+        delete socketsRender[place];
+        break;
+    }
+
+    console.log(page + ' ' + place + ' disconnected');
+  });
 });
