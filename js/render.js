@@ -31,7 +31,9 @@ function handleConnect() {
   if (dissappear) {
     clearTimeout(dissappear);
     dissappear = false;
+
     console.log('STATUS: Connection resumed, staying up.');
+
     stringSend(canvas);
     stringSend({ command: COMMAND_UP });
     stringSend({ command: COMMAND_COLOR, color: color });
@@ -41,13 +43,16 @@ function handleConnect() {
 function handleDisconnect() {
   if ($('#c').is(':visible')) {
     console.log('STATUS: waiting for reconnect before going down...');
+
     dissappear = setTimeout(function () {
       console.log('STATUS: Connection not resumed, going down.');
+
       dissappear = false;
       $('#c').fadeOut(CONFIG.FADE_DURATION, function () {
         canvas.clear();
       });
     }, CONFIG.FADE_TIMER);
+
   } else {
     canvas.clear();
   }
@@ -57,10 +62,10 @@ $(document).ready(function () {
   $.getJSON('./config.json', function (json) {
     CONFIG = json;
 
-    let URL = CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/render';
     canvas = this.__canvas = new fabric.StaticCanvas('c');
     canvas.setWidth(CONFIG.CANVAS_WIDTH);
     canvas.setHeight(CONFIG.CANVAS_HEIGHT);
-    openSocket(URL);
+
+    openSocket(CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/render');
   });
 });

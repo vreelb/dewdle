@@ -10,7 +10,6 @@ function dataURLtoBlob(dataurl) {
 $(document).ready(function() {
 	$.getJSON('./config.json', function (json) {
 		CONFIG = json;
-		let URL = CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/control';
 
 		$('#drawing-color').val(CONFIG.COLOR_SELECT[0]);	// set default brush color
 		$('#drawing-line-width').val(CONFIG.SIZE_SELECT[0]);	// set default brush size
@@ -21,7 +20,7 @@ $(document).ready(function() {
 
 		bindSpacebar();
 
-		socket = openSocket(URL);
+		socket = openSocket(CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/control');
 
 		$('#clear-canvas').click(function() {
 			canvas.clear();

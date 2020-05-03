@@ -1,8 +1,8 @@
 $(document).ready( function() {
 	$.getJSON('./config.json', function (json) {
 		CONFIG = json;
-		let URL = CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/draw';
-		socket = openSocket(URL);
+
+		socket = openSocket(CONFIG.BASE_URL + ':' + CONFIG.WEBSOCKET_PORT + '/draw');
 
 //////// CANVAS CODE
 		$('#drawing-color').val(CONFIG.COLOR_SELECT[0]);	// set default brush color

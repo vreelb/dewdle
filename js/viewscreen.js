@@ -110,7 +110,6 @@ function handleConnect() {
   if (dissappear) {
     clearTimeout(dissappear);
     clearInterval(countdown);
-    console.log('connection resumed');
   }
 }
 function handleDisconnect() {
@@ -127,9 +126,8 @@ function handleDisconnect() {
   } else {
     $('#indicator').append('<h2>Render is down.</h2>');
   }
-  console.log('STATUS: Waiting for reconnect...');
   dissappear = setTimeout(function () {
-    console.log("STATUS: Connection not resumed. Canvas is now automatically down.");
+    console.log("STATUS: Connection not resumed. Render is now automatically down.");
     dissappear = false;
     offAir();
   }, CONFIG.FADE_TIMER);

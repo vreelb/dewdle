@@ -17,6 +17,7 @@ function openSocket(URL) {
   if ('WebSocket' in window) {
     let open = false;
     const ws = new WebSocket(URL);
+    console.log('STATUS: Attempting to connect to `' + URL + '`...');
 
     ws.onopen = function () {
       console.log('STATUS: Connection to `' + URL + '` opened.');
@@ -31,23 +32,16 @@ function openSocket(URL) {
 
     ws.onclose = function () {
       if (open) {
-        console.log('ERROR: WebSocket connection closed.');
+        console.log('STATUS: WebSocket connection to `' + URL + '` is closed.');
         handleDisconnect();
-        setTimeout(function () {
-          console.log('STATUS: Trying to reconnect...');
-          open = false;
-          openSocket(URL);
-        }, CONFIG.RECONNECT_INTERVAL);
       }
-    };
 
-    ws.onerror = function () {
-      console.log('ERROR: Unable to connect to `' + URL + '`');
       setTimeout(function () {
-        console.log('STATUS: Trying to connect again...');
+        open = false;
         openSocket(URL);
       }, CONFIG.RECONNECT_INTERVAL);
     };
+
     return ws;
   } else {
     console.log('ERROR: This browser does not support WebSockets.');
