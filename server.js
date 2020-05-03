@@ -37,9 +37,9 @@ app.listen(CONFIG.WEBSERVER_PORT, function () {
   console.log('Web server started on port ' + CONFIG.WEBSERVER_PORT + '...');
 });
 
-const socketsDraw    = [];
+const socketsDraw = [];
 const socketsControl = [];
-const socketsRender  = [];
+const socketsRender = [];
 let tempCanvas = CONFIG.DEFAULT_CANVAS;
 let status, color, size;
 
