@@ -52,18 +52,18 @@ function sendCanvas() {
 
 let on_air = false;
 function onAir() {
-  $('#indicator').css({
-    width: canvas.getWidth() - 20,
-    height: canvas.getHeight() - 20,
-    border: '10px solid rgba(255, 0, 0, .9)',
-  });
+  $('#indicator')
+    .addClass('on-air')
+    .css({
+      width: canvas.getWidth() - 20,
+      height: canvas.getHeight() - 20,
+    });
   on_air = true;
 }
 function offAir() {
-  $('#indicator').css({
+  $('#indicator').removeClass('on-air').css({
     width: canvas.getWidth(),
     height: canvas.getHeight(),
-    border: 'none',
   });
   on_air = false;
 }
@@ -101,11 +101,8 @@ function evalMessage(msg) {
 
 let dissappear, countdown, timer;
 function handleConnect() {
-  $('#indicator')
-    .css({
-      'background-image': 'none',
-    })
-    .html('');
+  $('#indicator').removeClass('error-state').html('');
+
   timer = CONFIG.FADE_TIMER / 1000;
   if (dissappear) {
     clearTimeout(dissappear);
@@ -114,29 +111,26 @@ function handleConnect() {
 }
 function handleDisconnect() {
   $('#indicator')
-    .css({
-      'background-image':
-        'repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px)',
-    })
-    .html('<h1>Connection Lost</h1>');
-  if (on_air) {
-    $('#indicator').append(
-      '<h2>Render going down in ' + timer + ' seconds...</h2>'
+    .addClass('error-state')
+    .html(
+      '<h1>Connection Lost</h1>' +
+        (on_air
+          ? '<h2>Render going down in ' + timer + ' seconds...</h2>'
+          : '<h2>Render is down.</h2>')
     );
-  } else {
-    $('#indicator').append('<h2>Render is down.</h2>');
-  }
+
   dissappear = setTimeout(function () {
-    console.log("STATUS: Connection not resumed. Render is now automatically down.");
+    console.log(
+      'STATUS: Connection not resumed. Render is now automatically down.'
+    );
     dissappear = false;
     offAir();
   }, CONFIG.FADE_TIMER);
   if (on_air) {
-    timer--;
     countdown = setInterval(function () {
       if (timer > 0) {
         $('#indicator h2').html(
-          'Render going down in ' + timer-- + ' seconds...'
+          'Render going down in ' + --timer + ' seconds...'
         );
       } else {
         clearInterval(countdown);
@@ -201,5 +195,8 @@ $(document).ready(function () {
     }
     size_updated = false;
   });
-  $('#indicator').html('<h1>No Connection</h1><h2>Trying to connect...</h2>');
+
+  $('#indicator')
+    .addClass('error-state')
+    .html('<h1>No Connection</h1><h2>Trying to connect...</h2>');
 });

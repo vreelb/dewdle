@@ -1,25 +1,56 @@
 body {
-	margin: 0;
-	font-family: Helvetica, Arial, Sans-Serif;
+  margin: 0;
+  font-family: Helvetica, Arial, Sans-Serif;
 }
 #canvas-contain {
-	background-color: #ccc;
-	background-image: linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999), linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999);
-	background-size: 30px 30px;
-	background-position: 0 0, 15px 15px;
+  background-color: #ccc;
+  background-image: linear-gradient(
+      45deg,
+      #999 25%,
+      transparent 25%,
+      transparent 75%,
+      #999 75%,
+      #999
+    ),
+    linear-gradient(
+      45deg,
+      #999 25%,
+      transparent 25%,
+      transparent 75%,
+      #999 75%,
+      #999
+    );
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
 }
+
 #indicator {
-	position: absolute;
-	pointer-events: none;
-	text-align: center;
-	background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,0,0,.5) 35px, rgba(255,0,0,.5) 70px);
+  position: absolute;
+  pointer-events: none;
+  text-align: center;
 }
 #indicator h1 {
-	font-size: 48px;
+  font-size: 48px;
 }
 #indicator h2 {
-	font-size: 32px;
+  font-size: 32px;
 }
-#drawing-mode, #mode, #drawing-mode-selector {
-	display: none;
+
+.error-state {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 35px,
+    rgba(255, 0, 0, 0.5) 35px,
+    rgba(255, 0, 0, 0.5) 70px
+  );
+}
+.on-air {
+  border: 10px solid rgba(255, 0, 0, 0.9);
+}
+
+#drawing-mode,
+#mode,
+#drawing-mode-selector {
+  display: none;
 }
